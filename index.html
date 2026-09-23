@@ -215,39 +215,39 @@
           <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="m-1">
-              <span class="annot-label">R1 口径修复</span><br>
-              <strong class="annot-key">分润合计</strong>调整至「增值产品分润」之后；列表字段与明细页口径保持一致。
+              <span class="annot-label">分润合计列位置</span><br>
+              <strong class="annot-key">分润合计</strong>位于「增值产品分润」之后；列表字段与明细页口径保持一致。
             </div>
             <div class="annot" data-annot-id="m-2">
-              <span class="annot-label">R2 申请入口</span><br>
-              操作列文案由「申请」改为<strong class="annot-key">申请分润</strong>，仅「待申请 / 待修改」状态可点；同时<strong class="annot-key">取消筛选区右侧的「申请分润」按钮</strong>，同一入口不再重复出现，申请统一从列表操作列进入。
+              <span class="annot-label">申请入口唯一</span><br>
+              操作列按钮为<strong class="annot-key">申请分润</strong>，仅「待申请 / 待修改」状态可点；筛选区不设「申请分润」按钮，申请统一从列表操作列进入，同一入口不重复出现。
             </div>
             <div class="annot" data-annot-id="m-3">
-              <span class="annot-label">R3 申请金额</span><br>
-              已取消自定义申请金额，<strong class="annot-key">申请金额强制等于分润合计</strong>，不再允许手工修改。
+              <span class="annot-label">申请金额取值</span><br>
+              <strong class="annot-key">申请金额等于分润合计</strong>，不支持手工修改。
             </div>
             <div class="annot" data-annot-id="m-4">
-              <span class="annot-label">R4 额外收取展示</span><br>
+              <span class="annot-label">额外收取展示</span><br>
               分润列展示粒度随「是否允许下级查看额外收取的分润」开关切换：开 → 额外收取前细项 + 额外收取后细项；关 → 仅额外收取后细项。
             </div>
             <div class="annot annot-dim" data-annot-id="m-5">
               <span class="annot-label">本页保持</span><br>
-              「实发金额」沿用原始需求字段名，未随明细页统一为「实发分润」。
+              本页「实发金额」与明细页「实发分润」为同一含义，字段名随各页现状保留。
             </div>
             <div class="annot" data-annot-id="m-6">
-              <span class="annot-label">R5 筛选新增</span><br>
-              筛选条件按真实页面增加<strong class="annot-key">「签约主体」「业务类型」</strong>两项；「申请状态」枚举扩展为 待申请 / 待审核 / 待修改 / 已完成。
+              <span class="annot-label">筛选条件新增</span><br>
+              筛选条件增加<strong class="annot-key">「签约主体」「业务类型」</strong>两项；「申请状态」枚举为 待申请 / 待审核 / 待修改 / 已完成。
             </div>
             <div class="annot" data-annot-id="m-7">
-              <span class="annot-label">R6 字段隐藏</span><br>
-              本页已<strong class="annot-key">隐藏「开票金额」「扣除税点」</strong>两列；未产生实发金额的月份展示「--」。
+              <span class="annot-label">字段隐藏</span><br>
+              本页不展示<strong class="annot-key">「开票金额」「扣除税点」</strong>两列；未产生实发金额的月份展示「--」。
             </div>
             <div class="annot" data-annot-id="m-8">
-              <span class="annot-label">R7 申请与查看弹窗</span><br>
-              【申请分润】由跳转页面改为<strong class="annot-key">弹窗</strong>（已选分润合计、总计 x 条、表头全选、未勾选时【提交申请】置灰）；查看详情弹窗按状态反显，已完成追加「扣除税点」「实发分润」。
+              <span class="annot-label">申请与查看弹窗</span><br>
+              【申请分润】以<strong class="annot-key">弹窗</strong>形式呈现（已选分润合计、总计 x 条、表头全选、未勾选时【提交申请】置灰）；查看详情弹窗按状态反显，已完成追加「扣除税点」「实发分润」。
             </div>
             <div class="annot annot-highlight" data-annot-id="m-9">
-              <span class="annot-label">R8 历史分润提示与入口（显隐规则）</span><br>
+              <span class="annot-label">历史分润提示与入口（显隐规则）</span><br>
               提示文案<strong class="annot-key">「您有 X 元可按金额申请的历史分润金额。」</strong>与<strong class="annot-key">「申请历史分润」入口</strong>同属一个提示条，<strong class="annot-key">仅在可申请金额 &gt; 0 时展示；可申请金额 = 0 时两者一并隐藏</strong>。前置条件是「允许下级申请分润」为「开」——该开关为「关」时下级无任何申请入口，可申请金额按 0 处理，提示条与入口同样隐藏。可在「下级机构管理」配置页的「（演示开关）可申请的历史分润金额」输入框里直接改金额，边填边生效（填 0 或留空即隐藏）。
             </div>
           </div>
@@ -401,44 +401,44 @@
           <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="lm-1">
-              <span class="annot-label">R1 口径修复</span><br>
-              <strong class="annot-key">分润合计</strong>已调整至「增值产品分润」之后，与本页数据口径一致。
+              <span class="annot-label">分润合计列位置</span><br>
+              <strong class="annot-key">分润合计</strong>位于「增值产品分润」之后，与明细页口径一致。
             </div>
             <div class="annot annot-highlight" data-annot-id="lm-2">
-              <span class="annot-label">R2 新增发布状态</span><br>
+              <span class="annot-label">发布状态新增</span><br>
               筛选区与列表新增<strong class="annot-key">发布状态</strong>，枚举：待发布 / 已自动发布 / 已手动发布；发布中、发布失败时列内展示对应状态。
             </div>
             <div class="annot annot-highlight" data-annot-id="lm-3">
-              <span class="annot-label">R3 额外收取列</span><br>
-              「额外收取下级分润合计」列<strong class="annot-key">不加备注、直接展示原值</strong>（0.85 / 0.60 / 0.96）。<br>
-              原文《下级机构分润功能整合-v1.docx》「查看下级分润页面调整（查看下级分润 / 查看下级分润明细页面）」原句：「新增【是否允许下级查看额外收取的分润】字段，用于展示对应下级机构是否可查看到额外收取分润数据。 or 在额外收取下级分润的值后方，增加（下级可查看/下级不可查看），示例：」——本页该条<strong class="annot-key">本期不实现</strong>；「查看下级月分润明细」页按原文加注「（下级可查看 / 下级不可查看）」。
+              <span class="annot-label">额外收取列展示</span><br>
+              「额外收取下级分润合计」列<strong class="annot-key">直接展示原值</strong>（0.85 / 0.60 / 0.96），本页不加「（下级可查看 / 下级不可查看）」标注。<br>
+              该标注仅出现在「查看下级月分润明细」页的【额外收取下级分润】列后，用于标示下级机构能否看到额外收取前数据。
             </div>
             <div class="annot" data-annot-id="lm-4">
-              <span class="annot-label">R4 批量审核</span><br>
+              <span class="annot-label">批量审核</span><br>
               需<strong class="annot-key">先勾选数据行</strong>再点「批量审核」，弹窗只展示被勾选的数据。
             </div>
             <div class="annot annot-dim" data-annot-id="lm-5">
-              <span class="annot-label">R5 范围调整</span><br>
+              <span class="annot-label">入口范围</span><br>
               本页不设「下级申请管理」入口（保留「历史申请记录」入口）。
             </div>
             <div class="annot" data-annot-id="lm-6">
-              <span class="annot-label">R6 四项统计</span><br>
+              <span class="annot-label">四项统计</span><br>
               表头上方新增 4 项统计：<strong class="annot-key">分润合计 / 应分下级分润合计 / 已申请分润合计 / 待申请分润合计</strong>，居中展示且<strong class="annot-key">不随查询条件变化</strong>。
             </div>
             <div class="annot" data-annot-id="lm-7">
-              <span class="annot-label">R7 查询项新增</span><br>
+              <span class="annot-label">查询项新增</span><br>
               新增<strong class="annot-key">「审核状态」「申请日期（起止）」</strong>两个查询项；审核状态枚举：待审核 / 审核通过 / 审核驳回。
             </div>
             <div class="annot" data-annot-id="lm-8">
-              <span class="annot-label">R8 审核与列</span><br>
+              <span class="annot-label">审核操作与新增列</span><br>
               新增申请状态、申请时间、审核状态、审核时间、操作列；<strong class="annot-key">操作栏按审核状态</strong>给按钮：待审核【审核】，通过 / 驳回【查看】。
             </div>
             <div class="annot" data-annot-id="lm-9">
-              <span class="annot-label">R7 下级数据调整</span><br>
+              <span class="annot-label">下级数据调整</span><br>
               「下级数据调整」按钮打开「下级分润调整」弹窗（选择文件 / 下载模板 / 取消 / 确定，含上传成功、上传失败、清空三态），按钮<strong class="annot-key">不置灰</strong>。
             </div>
             <div class="annot annot-highlight" data-annot-id="lm-10">
-              <span class="annot-label">R9 查看下级额外收取分润</span><br>
+              <span class="annot-label">查看下级额外收取分润</span><br>
               操作列新增<strong class="annot-key">查看下级额外收取分润</strong>，点击从右侧滑出抽屉，展示该行下级机构的额外收取明细（额外收取前金额 / 额外收取下级分润（本机构收取）/ 下级应分额（额外收取后）），与「查看月分润」为同一抽屉样式。该按钮<strong class="annot-key">不受「是否允许下级机构查看额外收取下级分润数据」开关控制</strong>——该开关只约束下级自身看到的展示粒度，上级视角恒可查看。
             </div>
           </div>
@@ -496,11 +496,11 @@
           <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="md-1">
-              <span class="annot-label">R1 本页范围</span><br>
+              <span class="annot-label">本页范围</span><br>
               本页只做<strong class="annot-key">筛选条件调整 + 导出汇总数据按钮</strong>，不新增字段；「分润合计」「实发分润」两列在「查看下级月分润明细」页。
             </div>
             <div class="annot annot-dim" data-annot-id="md-2">
-              <span class="annot-label">R2 字段一致说明</span><br>
+              <span class="annot-label">字段一致说明</span><br>
               「查看与导出字段必须完全一致」是对<strong class="annot-key">查看下级月分润明细</strong>页的要求（统一含分润合计、实发金额），本页不适用。
             </div>
             <div class="annot annot-dim" data-annot-id="md-3">
@@ -508,8 +508,8 @@
               未发布 / 发布中 / 发布失败的月份不返回明细数据。
             </div>
             <div class="annot annot-highlight" data-annot-id="md-4">
-              <span class="annot-label">R3 筛选与导出</span><br>
-              筛选条件按真实页面更新为<strong class="annot-key">分润日期 / 商户编号 / 分润明细类型 / 业务员</strong>，并在日期行增加<strong class="annot-key">「导出汇总数据」</strong>按钮。
+              <span class="annot-label">筛选与导出</span><br>
+              筛选条件为<strong class="annot-key">分润日期 / 商户编号 / 分润明细类型 / 业务员</strong>，并在日期行增加<strong class="annot-key">「导出汇总数据」</strong>按钮。
             </div>
           </div>
         </div>
@@ -590,12 +590,12 @@
           <div class="pager"><span>共 0 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="lmd-1">
-              <span class="annot-label">R1 本页改动</span><br>
-              按《下级机构分润功能整合》原文，本页与「查看下级分润」两页改动同时生效：新增<strong class="annot-key">【发布状态】</strong>筛选与列（待发布 / 已自动发布 / 已手动发布），并在<strong class="annot-key">【额外收取下级分润】</strong>后加注「下级可查看 / 下级不可查看」；同时补齐<strong class="annot-key">分润合计、实发金额</strong>两列，与「查看下级分润」口径一致。
+              <span class="annot-label">本页规则</span><br>
+              本页新增<strong class="annot-key">【发布状态】</strong>筛选与列（待发布 / 已自动发布 / 已手动发布），并在<strong class="annot-key">【额外收取下级分润】</strong>后加注「下级可查看 / 下级不可查看」；同时补齐<strong class="annot-key">分润合计、实发金额</strong>两列，与「查看下级月分润」口径一致。
             </div>
             <div class="annot annot-dim" data-annot-id="lmd-2">
-              <span class="annot-label">原文范围说明</span><br>
-              原始 docx 该节标题为「查看下级分润<strong class="annot-key">/查看下级分润明细</strong>页面」，两条改动对<strong class="annot-key">两页同时生效</strong>。
+              <span class="annot-label">改动范围</span><br>
+              上述改动与<strong class="annot-key">「查看下级月分润」</strong>同时生效：两页的发布状态筛选、发布状态列、额外收取标注与合计口径保持一致。
             </div>
           </div>
         </div>
@@ -647,16 +647,16 @@
           <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="d-1">
-              <span class="annot-label">R1 口径修复</span><br>
-              <strong class="annot-key">分润合计</strong>调整至图示位置，与月分润列表口径统一。
+              <span class="annot-label">分润合计列位置</span><br>
+              <strong class="annot-key">分润合计</strong>位于图示位置，与月分润列表口径统一。
             </div>
             <div class="annot" data-annot-id="d-2">
-              <span class="annot-label">R2 字段隐藏</span><br>
-              <strong class="annot-key">实发金额、开票金额、扣除税点</strong>字段隐藏不再展示。
+              <span class="annot-label">字段隐藏</span><br>
+              本页不展示<strong class="annot-key">实发金额、开票金额、扣除税点</strong>三个字段。
             </div>
             <div class="annot" data-annot-id="d-3">
-              <span class="annot-label">R3 申请入口取消</span><br>
-              <strong class="annot-key">筛选区不设「申请分润」按钮</strong>，页面申请入口统一从「查看月分润」进入（真实系统该页原有此按钮，见《原型参考-真实页面截图清单》图3）。
+              <span class="annot-label">申请入口取消</span><br>
+              <strong class="annot-key">筛选区不设「申请分润」按钮</strong>，页面申请入口统一从「查看月分润」进入。
             </div>
           </div>
         </div>
@@ -746,7 +746,7 @@
           <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="ld-1">
-              <span class="annot-label">R1 新增统计</span><br>
+              <span class="annot-label">新增统计</span><br>
               表头上方新增<strong class="annot-key">「下级分润合计」</strong>统计，取「下级分润合计」列求和，且<strong class="annot-key">不随查询条件变化</strong>。
             </div>
             <div class="annot annot-dim" data-annot-id="ld-2">
@@ -885,7 +885,7 @@
               <span class="tip-text">元（评审演示用，可改数值；支持小数，留空或填 0 均按 0 处理）</span>
             </div>
             <span class="tip-text" id="history-remain-status" style="color:#1677ff;font-weight:600"></span>
-            <span class="tip-text">（仅用于演示本规则，不是真实配置项、也不写入 PRD。规则：可申请金额 &gt; 0 时，才展示【查看月分润】的提示文案「您有 X 元可按金额申请的历史分润金额。」与「申请历史分润」入口；可申请金额 = 0 时，文案与入口一并隐藏。前置条件：上方「允许下级申请分润」为「关」时，可申请金额按 0 处理，填任何金额都不会展示）</span>
+            <span class="tip-text">（演示用输入项，不是真实配置项。规则：可申请金额 &gt; 0 时，才展示【查看月分润】的提示文案「您有 X 元可按金额申请的历史分润金额。」与「申请历史分润」入口；可申请金额 = 0 时，文案与入口一并隐藏。前置条件：上方「允许下级申请分润」为「关」时，可申请金额按 0 处理，填任何金额都不会展示）</span>
           </div>
 
           <div class="btn-area" style="margin-top:20px;justify-content:flex-end">
@@ -894,31 +894,31 @@
           </div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="cfg-1">
-              <span class="annot-label">R1 新增配置区块</span><br>
+              <span class="annot-label">新增配置区块</span><br>
               新增<strong class="annot-key">下级分润设置</strong>区块，含五项：查看分润权限（父权限）、允许下级申请分润、是否允许查看额外收取分润、设置额外收取比例、下级分润发布设置。
             </div>
             <div class="annot annot-highlight" data-annot-id="cfg-2">
-              <span class="annot-label">R2 显隐收窄</span><br>
+              <span class="annot-label">显隐范围</span><br>
               随「查看分润权限」显隐的是<strong class="annot-key">「允许下级申请分润」与「是否允许下级机构查看额外收取下级分润数据」两项</strong>；额外收取比例设置与发布设置常显。
             </div>
             <div class="annot" data-annot-id="cfg-3">
-              <span class="annot-label">R3 额外收取比例</span><br>
+              <span class="annot-label">额外收取比例</span><br>
               单选<strong class="annot-key">统一收取 / 分别收取</strong>，二选一必填；比例输入框仅允许 [0,100] 的整数，统一收取展开 1 个输入框、分别收取展开 5 个细项输入框。
             </div>
             <div class="annot" data-annot-id="cfg-4">
-              <span class="annot-label">R4 发布设置</span><br>
+              <span class="annot-label">发布设置</span><br>
               单选<strong class="annot-key">自动发布 / 手动发布</strong>，默认自动发布；该配置是上级页「发布状态」列的取值来源，故设为常显。
             </div>
             <div class="annot" data-annot-id="cfg-5">
-              <span class="annot-label">R5 调整入口位置</span><br>
+              <span class="annot-label">入口位置</span><br>
               「下级数据调整」上传入口随本期交付，入口位于「查看下级月分润」页筛选区。
             </div>
             <div class="annot annot-highlight" data-annot-id="cfg-6">
-              <span class="annot-label">R5 申请开关（新增）</span><br>
+              <span class="annot-label">申请开关（新增）</span><br>
               新增<strong class="annot-key">「允许下级申请分润」</strong>开关：属「查看分润权限」子权限、同入口配置；关闭后下级<strong class="annot-key">完全看不到申请入口</strong>（不做置灰提示）；存量机构系统默认开。
             </div>
             <div class="annot annot-highlight" data-annot-id="cfg-7">
-              <span class="annot-label">R6 口径改写</span><br>
+              <span class="annot-label">口径说明</span><br>
               「是否允许下级机构查看额外收取下级分润数据」的控制对象是<strong class="annot-key">下级能否看到额外收取前信息</strong>：允许 → 额外收取前细项 + 额外收取金额 + 额外收取后细项；不允许 → 仅额外收取后细项，且不展示额外收取金额列。
             </div>
           </div>
@@ -989,7 +989,7 @@
           <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="his-1">
-              <span class="annot-label">R1 保留页面与入口</span><br>
+              <span class="annot-label">保留页面与入口</span><br>
               本页<strong class="annot-key">保留</strong>：用于查看历史申请流水；入口在「查看月分润」与「查看下级月分润」页的「申请记录 / 历史申请记录」按钮。
             </div>
             <div class="annot annot-dim" data-annot-id="his-2">
@@ -1007,7 +1007,7 @@
       <!-- ========== 新功能提示（各类机构文案）· 说明页 ========== -->
       <section class="page" id="page-guide-spec">
         <div class="notice">
-          下列提示文案依据《支持下级机构按月申请分润 V1.0》的「新功能提示」章节原文：「功能上线后机构首次进入分润相关模块，展示新功能提示，点击【我知道了】下次进入分润模块继续提示，点击【不再提示】后不再提示。需注意针对不同机构展示不同提示内容。」
+          功能上线后，机构首次进入分润相关模块即展示新功能提示；点击【我知道了】下次进入分润模块继续提示，点击【不再提示】后不再提示。不同机构展示的提示内容不同，具体文案见下方三类。
         </div>
         <div class="guide-list">
 
