@@ -1,0 +1,9 @@
+.annot-layer{position:relative;min-height:80px;margin-top:16px}
+.annot{position:absolute;width:316px;background:#fff;border:1px solid #1677ff;border-left:3px solid #1677ff;border-radius:4px;padding:8px 11px;font-size:12px;line-height:1.65;color:#1f2329;box-shadow:0 4px 14px rgba(22,119,255,.16);z-index:80;cursor:grab}
+.annot.dragging{z-index:200;box-shadow:0 8px 24px rgba(22,119,255,.3)}
+.annot-label{display:inline-block;background:#1677ff;color:#fff;font-size:11px;line-height:16px;padding:0 6px;border-radius:3px;margin-bottom:4px}
+.annot-key{color:#1677ff}
+.annot-dim{border-color:#c9cdd4;border-left-color:#c9cdd4;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.annot-dim .annot-label{background:#86909c}
+.annot-highlight{border-color:#ff7d00;border-left-color:#ff7d00;background:#fff7e6}
+.annot-highlight .annot-label{background:#ff7d00}

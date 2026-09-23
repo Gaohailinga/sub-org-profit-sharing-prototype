@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>分润系统 · 下级分润方案原型</title>
+<link rel="stylesheet" href="css/style.css?v=20260923e" /><link rel="stylesheet" href="css/annot.css?v=20260923e" />
+</head>
+<body>
+
+<!-- ===== 顶级导航 ===== -->
+<div class="top-nav">
+  <div class="logo">分润管理系统</div>
+  <div class="nav-list">
+    <div class="nav-item">首页</div>
+    <div class="nav-item">商户管理</div>
+    <div class="nav-item">交易数据</div>
+    <div class="nav-item active" data-module="profit">分润管理</div>
+    <div class="nav-item">风控管理</div>
+    <div class="nav-item">产品中心</div>
+    <div class="nav-item" data-module="account">账号管理</div>
+    <div class="nav-item">营销平台</div>
+  </div>
+  <div class="nav-right">帮助中心 ｜ 生产测试代理（机构ID：11732861）</div>
+</div>
+
+<div class="app-body">
+  <!-- ===== 左侧菜单（二级菜单随顶部导航选中的模块切换） ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head" id="sidebarToggle">三 收起</div>
+
+    <!-- 模块一：分润管理（顶部导航选中「分润管理」时的左侧二级菜单） -->
+    <div class="menu-group menu-scope-profit">
+      <div class="menu-group-title">月分润</div>
+      <div class="menu-item active" data-page="page-month">查看月分润</div>
+      <div class="menu-item" data-page="page-month-detail">查看月分润明细</div>
+      <div class="menu-item" data-page="page-lower-month">查看下级月分润</div>
+      <div class="menu-item" data-page="page-lower-month-detail">查看下级月分润明细</div>
+    </div>
+
+    <div class="menu-group menu-scope-profit">
+      <div class="menu-group-title">日分润</div>
+      <div class="menu-item" data-page="page-daily">查看日分润</div>
+      <div class="menu-item" data-page="page-daily-detail">查看日分润明细</div>
+      <div class="menu-item" data-page="page-lower-daily">查看下级日分润</div>
+      <div class="menu-item" data-page="page-lower-daily-detail">查看下级日分润明细</div>
+    </div>
+
+    <div class="menu-group menu-scope-profit">
+      <div class="menu-group-title">发票</div>
+      <div class="menu-item disabled">发票申请</div>
+      <div class="menu-item disabled">发票记录</div>
+    </div>
+
+    <div class="menu-group menu-scope-profit">
+      <div class="menu-group-title">机构分润</div>
+      <div class="menu-item" data-page="page-migrate" data-menu-key="menu-lower-apply-manage">下级申请管理</div>
+    </div>
+
+    <div class="menu-group menu-scope-profit">
+      <div class="menu-group-title">原型说明页（非真实菜单）</div>
+      <div class="menu-item" data-page="page-guide-spec">新功能提示（3 类文案）</div>
+      <div class="menu-item" data-page="page-history-apply-original">原申请分润页面（占位）</div>
+    </div>
+
+    <!-- 模块二：账号管理（顶部导航选中「账号管理」时的左侧二级菜单）
+         下级机构管理属于本模块，不在「分润管理」的左侧菜单下 -->
+    <div class="menu-group menu-scope-account" style="display:none">
+      <div class="menu-group-title">账号管理</div>
+      <div class="menu-item" data-page="page-org-config">下级机构管理</div>
+    </div>
+  </aside>
+
+  <!-- ===== 内容区 ===== -->
+  <div class="content">
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-page="page-month">查看月分润<span class="tab-close">×</span></div>
+    </div>
+
+    <div class="page-wrap">
+
+      <!-- ========== 查看月分润（下级机构） ========== -->
+      <section class="page active" id="page-month">
+        <div class="notice">
+          每月前 7 个工作日内发布分润数据，明细数据以每月分润发布后查询结果为准，如对分润数据有疑问请发送邮件至 xx@xx.com 核查。
+        </div>
+        <div id="month-history-apply-entry" class="notice warn notice-history" style="display:none">
+          <span class="notice-history-text">您有 <b class="notice-history-amount" id="month-history-apply-amount">10,000.00</b> 元可按金额申请的历史分润金额。</span>
+          <button class="btn btn-xs" data-page-jump="page-history-apply-original">申请历史分润 ›</button>
+        </div>
+        <div class="panel">
+          <div class="filters">
+            <div class="field">
+              <label>选择月份</label>
+              <input class="input md" type="text" value="2024-01" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2024-03" readonly />
+            </div>
+            <div class="field">
+              <label>分润状态</label>
+              <select class="select md"><option>全部</option><option>已发布</option><option>待发布</option></select>
+            </div>
+            <div class="field">
+              <label>申请状态</label>
+              <select class="select md">
+                <option>全部</option><option>待申请</option><option>待审核</option>
+                <option>待修改</option><option>已完成</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>签约主体</label>
+              <select class="select md"><option>全部</option><option>随行付</option><option>天阙</option></select>
+            </div>
+            <div class="field">
+              <label>业务类型</label>
+              <select class="select md">
+                <option>全部</option><option>银行卡分润</option><option>二维码分润</option>
+                <option>提现产品分润</option><option>其他结算产品分润</option>
+                <option>增值产品分润</option><option>代付</option>
+              </select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
+              <button class="btn" data-toast="已确认当前分润数据">分润确认</button>
+              <button class="btn" data-page-jump="page-history">申请记录</button>
+            </div>
+          </div>
+
+          <div class="stats">
+            <span><span class="badge">2</span>应发分润金额：<span class="stat-num">1.76</span></span>
+            <span><span class="badge">3</span>待发分润金额：<span class="stat-num">0.00</span></span>
+          </div>
+
+          <!-- ===== 额外收取下级分润数据展示：合并到月份列表的抽屉明细中 ===== -->
+          <style>
+            .month-detail-row > td { padding: 8px 12px; background: #fafbfc; border-top: none; }
+            .month-detail-row .grid { margin: 0; }
+          </style>
+          <div style="background:#fff7e6;border:1px solid #ffd591;color:#874d00;font-size:13px;line-height:21px;padding:12px;border-radius:4px;margin:12px 0">
+            <strong>额外收取下级分润数据展示</strong>：点击每月「查看额外收取分润」按钮，从右侧滑出抽屉展示。当前机构配置为 <span id="month-extra-status" class="tag tag-orange">不允许（默认）</span>，抽屉中仅展示额外收取后的实际到手金额；若配置为允许，则同屏展示额外收取前金额、额外收取金额、我的应分额三列。配置入口：顶部导航「账号管理」→ 左侧「下级机构管理」→ 编辑。
+          </div>
+
+          <div style="display:none">
+            <div id="detail-1"><table class="grid"><thead><tr><th>分润细项</th><th class="num month-extra-col-before hide">额外收取前金额</th><th class="num month-extra-col-amount hide">额外收取金额（上级抽取）</th><th class="num">我的应分额（额外收取后）</th></tr></thead><tbody>
+<tr><td>扫码交易</td><td class="num month-extra-col-before hide">3,645.00</td><td class="num month-extra-col-amount hide">364.50</td><td class="num">3,280.50</td></tr>
+<tr><td>刷卡交易</td><td class="num month-extra-col-before hide">1,611.11</td><td class="num month-extra-col-amount hide">161.11</td><td class="num">1,450.00</td></tr>
+<tr><td>订单分账</td><td class="num month-extra-col-before hide">955.56</td><td class="num month-extra-col-amount hide">95.56</td><td class="num">860.00</td></tr>
+<tr><td>余额分账</td><td class="num month-extra-col-before hide">466.67</td><td class="num month-extra-col-amount hide">46.67</td><td class="num">420.00</td></tr>
+<tr><td>提现产品</td><td class="num month-extra-col-before hide">344.44</td><td class="num month-extra-col-amount hide">34.44</td><td class="num">310.00</td></tr>
+<tr><td>其他结算</td><td class="num month-extra-col-before hide">0.00</td><td class="num month-extra-col-amount hide">0.00</td><td class="num">0.00</td></tr>
+<tr style="background:#f7f8fa;font-weight:600"><td>合计</td><td class="num month-extra-col-before hide">7,022.78</td><td class="num month-extra-col-amount hide">702.28</td><td class="num">6,320.50</td></tr>
+</tbody></table></div>
+<div id="detail-2"><table class="grid"><thead><tr><th>分润细项</th><th class="num month-extra-col-before hide">额外收取前金额</th><th class="num month-extra-col-amount hide">额外收取金额（上级抽取）</th><th class="num">我的应分额（额外收取后）</th></tr></thead><tbody>
+<tr><td>扫码交易</td><td class="num month-extra-col-before hide">3,345.00</td><td class="num month-extra-col-amount hide">334.50</td><td class="num">3,010.50</td></tr>
+<tr><td>刷卡交易</td><td class="num month-extra-col-before hide">1,477.78</td><td class="num month-extra-col-amount hide">147.78</td><td class="num">1,330.00</td></tr>
+<tr><td>订单分账</td><td class="num month-extra-col-before hide">877.78</td><td class="num month-extra-col-amount hide">87.78</td><td class="num">790.00</td></tr>
+<tr><td>余额分账</td><td class="num month-extra-col-before hide">433.33</td><td class="num month-extra-col-amount hide">43.33</td><td class="num">390.00</td></tr>
+<tr><td>提现产品</td><td class="num month-extra-col-before hide">311.11</td><td class="num month-extra-col-amount hide">31.11</td><td class="num">280.00</td></tr>
+<tr><td>其他结算</td><td class="num month-extra-col-before hide">0.00</td><td class="num month-extra-col-amount hide">0.00</td><td class="num">0.00</td></tr>
+<tr style="background:#f7f8fa;font-weight:600"><td>合计</td><td class="num month-extra-col-before hide">6,445.00</td><td class="num month-extra-col-amount hide">644.50</td><td class="num">5,800.50</td></tr>
+</tbody></table></div>
+<div id="detail-3"><table class="grid"><thead><tr><th>分润细项</th><th class="num month-extra-col-before hide">额外收取前金额</th><th class="num month-extra-col-amount hide">额外收取金额（上级抽取）</th><th class="num">我的应分额（额外收取后）</th></tr></thead><tbody>
+<tr><td>扫码交易</td><td class="num month-extra-col-before hide">3,088.89</td><td class="num month-extra-col-amount hide">308.89</td><td class="num">2,780.00</td></tr>
+<tr><td>刷卡交易</td><td class="num month-extra-col-before hide">1,366.67</td><td class="num month-extra-col-amount hide">136.67</td><td class="num">1,230.00</td></tr>
+<tr><td>订单分账</td><td class="num month-extra-col-before hide">811.11</td><td class="num month-extra-col-amount hide">81.11</td><td class="num">730.00</td></tr>
+<tr><td>余额分账</td><td class="num month-extra-col-before hide">400.00</td><td class="num month-extra-col-amount hide">40.00</td><td class="num">360.00</td></tr>
+<tr><td>提现产品</td><td class="num month-extra-col-before hide">288.89</td><td class="num month-extra-col-amount hide">28.89</td><td class="num">260.00</td></tr>
+<tr><td>其他结算</td><td class="num month-extra-col-before hide">0.00</td><td class="num month-extra-col-amount hide">0.00</td><td class="num">0.00</td></tr>
+<tr style="background:#f7f8fa;font-weight:600"><td>合计</td><td class="num month-extra-col-before hide">5,955.56</td><td class="num month-extra-col-amount hide">595.56</td><td class="num">5,360.00</td></tr>
+</tbody></table></div>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr>
+                  <th>序号</th><th>分润月份</th><th>申请时间</th><th>分润状态</th>
+                  <th class="num">实发金额</th><th>申请状态</th>
+                  <th class="num">银行卡分润</th><th class="num">二维码分润</th>
+                  <th class="num">提现产品分润</th><th class="num">其他结算产品分润</th>
+                  <th class="num">增值产品分润</th><th class="num">分润合计</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td><td>2024-03</td><td>--</td><td><span class="tag tag-green">已发布</span></td>
+                  <td class="num">--</td><td><span class="tag tag-orange">待申请</span></td>
+                  <td class="num">0.30</td><td class="num">0.40</td><td class="num">0.20</td><td class="num">0.20</td>
+                  <td class="num">0.86</td><td class="num">1.96</td>
+                  <td><button class="btn-link" data-modal="modal-apply" data-allow-apply>申请分润</button><button class="btn-link btn-toggle-detail" data-detail-target="detail-1">查看额外收取分润</button><span data-deny-apply style="color:#86909c">--</span></td>
+                </tr>
+                <tr>
+                  <td>2</td><td>2024-02</td><td>2024-03-05 15:10:23</td><td><span class="tag tag-green">已发布</span></td>
+                  <td class="num">--</td><td><span class="tag tag-red">待修改</span></td>
+                  <td class="num">0.28</td><td class="num">0.36</td><td class="num">0.18</td><td class="num">0.18</td>
+                  <td class="num">0.80</td><td class="num">1.80</td>
+                  <td>
+                    <button class="btn-link" data-modal="modal-apply" data-allow-apply>申请分润</button>
+                    <button class="btn-link" data-modal="modal-view-pending">查看</button>
+                    <button class="btn-link btn-toggle-detail" data-detail-target="detail-2">查看额外收取分润</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td>3</td><td>2024-01</td><td>2024-02-06 10:02:11</td><td><span class="tag tag-green">已发布</span></td>
+                  <td class="num">1.66</td><td><span class="tag tag-green">已完成</span></td>
+                  <td class="num">0.26</td><td class="num">0.34</td><td class="num">0.16</td><td class="num">0.16</td>
+                  <td class="num">0.74</td><td class="num">1.66</td>
+                  <td><button class="btn-link" data-modal="modal-view-done">查看</button><button class="btn-link btn-toggle-detail" data-detail-target="detail-3">查看额外收取分润</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="m-1">
+              <span class="annot-label">R1 口径修复</span><br>
+              <strong class="annot-key">分润合计</strong>调整至「增值产品分润」之后；列表字段与明细页口径保持一致。
+            </div>
+            <div class="annot" data-annot-id="m-2">
+              <span class="annot-label">R2 申请入口</span><br>
+              操作列文案由「申请」改为<strong class="annot-key">申请分润</strong>，仅「待申请 / 待修改」状态可点；同时<strong class="annot-key">取消筛选区右侧的「申请分润」按钮</strong>，同一入口不再重复出现，申请统一从列表操作列进入。
+            </div>
+            <div class="annot" data-annot-id="m-3">
+              <span class="annot-label">R3 申请金额</span><br>
+              已取消自定义申请金额，<strong class="annot-key">申请金额强制等于分润合计</strong>，不再允许手工修改。
+            </div>
+            <div class="annot" data-annot-id="m-4">
+              <span class="annot-label">R4 额外收取展示</span><br>
+              分润列展示粒度随「是否允许下级查看额外收取的分润」开关切换：开 → 额外收取前细项 + 额外收取后细项；关 → 仅额外收取后细项。
+            </div>
+            <div class="annot annot-dim" data-annot-id="m-5">
+              <span class="annot-label">本页保持</span><br>
+              「实发金额」沿用原始需求字段名，未随明细页统一为「实发分润」。
+            </div>
+            <div class="annot" data-annot-id="m-6">
+              <span class="annot-label">R5 筛选新增</span><br>
+              筛选条件按真实页面增加<strong class="annot-key">「签约主体」「业务类型」</strong>两项；「申请状态」枚举扩展为 待申请 / 待审核 / 待修改 / 已完成。
+            </div>
+            <div class="annot" data-annot-id="m-7">
+              <span class="annot-label">R6 字段隐藏</span><br>
+              本页已<strong class="annot-key">隐藏「开票金额」「扣除税点」</strong>两列；未产生实发金额的月份展示「--」。
+            </div>
+            <div class="annot" data-annot-id="m-8">
+              <span class="annot-label">R7 申请与查看弹窗</span><br>
+              【申请分润】由跳转页面改为<strong class="annot-key">弹窗</strong>（已选分润合计、总计 x 条、表头全选、未勾选时【提交申请】置灰）；查看详情弹窗按状态反显，已完成追加「扣除税点」「实发分润」。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="m-9">
+              <span class="annot-label">R8 历史分润提示与入口（显隐规则）</span><br>
+              提示文案<strong class="annot-key">「您有 X 元可按金额申请的历史分润金额。」</strong>与<strong class="annot-key">「申请历史分润」入口</strong>同属一个提示条，<strong class="annot-key">仅在可申请金额 &gt; 0 时展示；可申请金额 = 0 时两者一并隐藏</strong>。前置条件是「允许下级申请分润」为「开」——该开关为「关」时下级无任何申请入口，可申请金额按 0 处理，提示条与入口同样隐藏。可在「下级机构管理」配置页的「（演示开关）可申请的历史分润金额」输入框里直接改金额，边填边生效（填 0 或留空即隐藏）。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 查看下级月分润（上级机构） ========== -->
+      <section class="page" id="page-lower-month">
+        <div class="panel">
+          <div class="page-head">
+            <h3 class="page-title">查看下级分润信息 <span class="help-dot">?</span></h3>
+          </div>
+          <div class="filters">
+            <div class="field">
+              <label>选择月份</label>
+              <input class="input md" type="text" value="2025-06" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2025-06" readonly />
+            </div>
+            <div class="field">
+              <label>下级机构</label>
+              <select class="select md"><option>请选择下级机构</option><option>测试代理A</option><option>测试代理B</option></select>
+            </div>
+            <div class="field">
+              <label>发布状态</label>
+              <select class="select md">
+                <option>全部</option><option>待发布</option><option>已自动发布</option><option>已手动发布</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>申请日期</label>
+              <input class="input md" type="text" value="2023-10-17" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2024-04-17" readonly />
+            </div>
+            <div class="field">
+              <label>审核状态</label>
+              <select class="select md">
+                <option>全部</option><option>待审核</option><option>审核通过</option><option>审核驳回</option>
+              </select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
+              <button class="btn" data-modal="modal-adjust">下级数据调整</button>
+              <button class="btn btn-primary" id="btn-batch-audit">批量审核</button>
+              <button class="btn" data-page-jump="page-history">历史申请记录</button>
+            </div>
+          </div>
+
+          <div class="stats">
+            <span><span class="badge">1</span>分润合计：<span class="stat-num">2.61</span></span>
+            <span><span class="badge">2</span>应分下级分润合计：<span class="stat-num">1.76</span></span>
+            <span><span class="badge">3</span>已申请分润合计：<span class="stat-num">6.00</span></span>
+            <span><span class="badge">4</span>待申请分润合计：<span class="stat-num">0.00</span></span>
+          </div>
+          <!-- ===== 额外收取下级分润明细：操作列「查看下级额外收取分润」→ 右侧抽屉（不受「是否允许下级机构查看额外收取下级分润数据」开关控制，上级视角恒可查看） ===== -->
+          <div style="display:none">
+            <div id="detail-lm-1"><table class="grid"><thead><tr><th>分润细项</th><th class="num">额外收取前金额</th><th class="num">额外收取下级分润（本机构收取）</th><th class="num">下级应分额（额外收取后）</th></tr></thead><tbody>
+<tr><td>扫码交易</td><td class="num">1.10</td><td class="num">0.36</td><td class="num">0.74</td></tr>
+<tr><td>刷卡交易</td><td class="num">0.62</td><td class="num">0.21</td><td class="num">0.41</td></tr>
+<tr><td>订单分账</td><td class="num">0.38</td><td class="num">0.13</td><td class="num">0.25</td></tr>
+<tr><td>余额分账</td><td class="num">0.26</td><td class="num">0.09</td><td class="num">0.17</td></tr>
+<tr><td>提现产品</td><td class="num">0.15</td><td class="num">0.06</td><td class="num">0.09</td></tr>
+<tr><td>其他结算</td><td class="num">0.10</td><td class="num">0.00</td><td class="num">0.10</td></tr>
+<tr style="background:#f7f8fa;font-weight:600"><td>合计</td><td class="num">2.61</td><td class="num">0.85</td><td class="num">1.76</td></tr>
+</tbody></table></div>
+            <div id="detail-lm-2"><table class="grid"><thead><tr><th>分润细项</th><th class="num">额外收取前金额</th><th class="num">额外收取下级分润（本机构收取）</th><th class="num">下级应分额（额外收取后）</th></tr></thead><tbody>
+<tr><td>扫码交易</td><td class="num">2.80</td><td class="num">0.29</td><td class="num">2.51</td></tr>
+<tr><td>刷卡交易</td><td class="num">1.40</td><td class="num">0.14</td><td class="num">1.26</td></tr>
+<tr><td>订单分账</td><td class="num">0.70</td><td class="num">0.07</td><td class="num">0.63</td></tr>
+<tr><td>余额分账</td><td class="num">0.50</td><td class="num">0.06</td><td class="num">0.44</td></tr>
+<tr><td>提现产品</td><td class="num">0.40</td><td class="num">0.04</td><td class="num">0.36</td></tr>
+<tr><td>其他结算</td><td class="num">0.20</td><td class="num">0.00</td><td class="num">0.20</td></tr>
+<tr style="background:#f7f8fa;font-weight:600"><td>合计</td><td class="num">6.00</td><td class="num">0.60</td><td class="num">5.40</td></tr>
+</tbody></table></div>
+            <div id="detail-lm-3"><table class="grid"><thead><tr><th>分润细项</th><th class="num">额外收取前金额</th><th class="num">额外收取下级分润（本机构收取）</th><th class="num">下级应分额（额外收取后）</th></tr></thead><tbody>
+<tr><td>扫码交易</td><td class="num">1.20</td><td class="num">0.37</td><td class="num">0.83</td></tr>
+<tr><td>刷卡交易</td><td class="num">0.80</td><td class="num">0.25</td><td class="num">0.55</td></tr>
+<tr><td>订单分账</td><td class="num">0.50</td><td class="num">0.16</td><td class="num">0.34</td></tr>
+<tr><td>余额分账</td><td class="num">0.40</td><td class="num">0.12</td><td class="num">0.28</td></tr>
+<tr><td>提现产品</td><td class="num">0.20</td><td class="num">0.06</td><td class="num">0.14</td></tr>
+<tr><td>其他结算</td><td class="num">0.10</td><td class="num">0.00</td><td class="num">0.10</td></tr>
+<tr style="background:#f7f8fa;font-weight:600"><td>合计</td><td class="num">3.20</td><td class="num">0.96</td><td class="num">2.24</td></tr>
+</tbody></table></div>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="lm-check-all" /></th>
+                  <th>序号</th><th>分润月份</th><th>下级机构</th><th>下级机构名称</th>
+                  <th class="num">分润合计 <span class="help-dot">?</span></th>
+                  <th class="num">非直属商户分润收益合计 <span class="help-dot">?</span></th>
+                  <th class="num">额外收取下级分润合计 <span class="help-dot">?</span></th>
+                  <th class="num">应分下级分润合计</th>
+                  <th class="num">银行卡分润</th><th class="num">二维码分润</th>
+                  <th class="num">提现产品分润</th><th class="num">其他结算产品分润</th><th class="num">增值产品分润</th>
+                  <th>发布状态</th><th>申请状态</th><th>申请时间</th><th class="num">实发金额</th>
+                  <th>审核状态</th><th>审核时间</th><th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" class="lm-check" data-month="2025-06" data-org="测试代理A" data-due="1.76" data-apply="1.76" data-tax="6" data-real="1.654" /></td>
+                  <td>1</td><td>2025-06</td><td>11732862</td><td>测试代理A</td>
+                  <td class="num">2.61</td><td class="num">0.12</td>
+                  <td class="num">0.85</td><td class="num">1.76</td>
+                  <td class="num">0.40</td><td class="num">0.50</td><td class="num">0.30</td><td class="num">0.30</td><td class="num">1.11</td>
+                  <td><span class="tag tag-green">已自动发布</span></td>
+                  <td><span class="tag tag-orange">待审核</span></td><td>2025-07-02 09:12:30</td><td class="num">--</td>
+                  <td><span class="tag tag-blue">待审核</span></td><td>--</td>
+                  <td>
+                    <button class="btn-link" data-modal="modal-audit">审核</button>
+                    <button class="btn-link" data-modal="modal-view-pending">查看</button>
+                    <button class="btn-link btn-extra-detail" data-detail-target="detail-lm-1" data-detail-month="2025-06">查看下级额外收取分润</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class="lm-check" data-month="2025-05" data-org="测试代理B" data-due="6.00" data-apply="6.00" data-tax="6" data-real="5.640" /></td>
+                  <td>2</td><td>2025-05</td><td>11732863</td><td>测试代理B</td>
+                  <td class="num">6.00</td><td class="num">0.00</td>
+                  <td class="num">0.60</td><td class="num">5.40</td>
+                  <td class="num">2.00</td><td class="num">1.60</td><td class="num">1.00</td><td class="num">0.40</td><td class="num">1.00</td>
+                  <td><span class="tag tag-green">已手动发布</span></td>
+                  <td><span class="tag tag-green">已完成</span></td><td>2025-06-03 14:20:05</td><td class="num">5.64</td>
+                  <td><span class="tag tag-green">审核通过</span></td><td>2025-06-05 10:33:18</td>
+                  <td>
+                    <button class="btn-link" data-modal="modal-view-done">查看</button>
+                    <button class="btn-link btn-extra-detail" data-detail-target="detail-lm-2" data-detail-month="2025-05">查看下级额外收取分润</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class="lm-check" data-month="2025-04" data-org="测试代理C" data-due="2.24" data-apply="2.24" data-tax="3" data-real="2.173" /></td>
+                  <td>3</td><td>2025-04</td><td>11732864</td><td>测试代理C</td>
+                  <td class="num">3.20</td><td class="num">0.08</td>
+                  <td class="num">0.96</td><td class="num">2.24</td>
+                  <td class="num">1.00</td><td class="num">0.90</td><td class="num">0.50</td><td class="num">0.20</td><td class="num">0.60</td>
+                  <td><span class="tag tag-gray">待发布</span></td>
+                  <td><span class="tag tag-red">待修改</span></td><td>2025-05-06 11:05:44</td><td class="num">--</td>
+                  <td><span class="tag tag-red">审核驳回</span></td><td>2025-05-08 16:40:02</td>
+                  <td>
+                    <button class="btn-link" data-modal="modal-view-pending">查看</button>
+                    <button class="btn-link btn-extra-detail" data-detail-target="detail-lm-3" data-detail-month="2025-04">查看下级额外收取分润</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="lm-1">
+              <span class="annot-label">R1 口径修复</span><br>
+              <strong class="annot-key">分润合计</strong>已调整至「增值产品分润」之后，与本页数据口径一致。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="lm-2">
+              <span class="annot-label">R2 新增发布状态</span><br>
+              筛选区与列表新增<strong class="annot-key">发布状态</strong>，枚举：待发布 / 已自动发布 / 已手动发布；发布中、发布失败时列内展示对应状态。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="lm-3">
+              <span class="annot-label">R3 额外收取列</span><br>
+              「额外收取下级分润合计」列<strong class="annot-key">不加备注、直接展示原值</strong>（0.85 / 0.60 / 0.96）。<br>
+              原文《下级机构分润功能整合-v1.docx》「查看下级分润页面调整（查看下级分润 / 查看下级分润明细页面）」原句：「新增【是否允许下级查看额外收取的分润】字段，用于展示对应下级机构是否可查看到额外收取分润数据。 or 在额外收取下级分润的值后方，增加（下级可查看/下级不可查看），示例：」——本页该条<strong class="annot-key">本期不实现</strong>；「查看下级月分润明细」页按原文加注「（下级可查看 / 下级不可查看）」。
+            </div>
+            <div class="annot" data-annot-id="lm-4">
+              <span class="annot-label">R4 批量审核</span><br>
+              需<strong class="annot-key">先勾选数据行</strong>再点「批量审核」，弹窗只展示被勾选的数据。
+            </div>
+            <div class="annot annot-dim" data-annot-id="lm-5">
+              <span class="annot-label">R5 范围调整</span><br>
+              本页不设「下级申请管理」入口（保留「历史申请记录」入口）。
+            </div>
+            <div class="annot" data-annot-id="lm-6">
+              <span class="annot-label">R6 四项统计</span><br>
+              表头上方新增 4 项统计：<strong class="annot-key">分润合计 / 应分下级分润合计 / 已申请分润合计 / 待申请分润合计</strong>，居中展示且<strong class="annot-key">不随查询条件变化</strong>。
+            </div>
+            <div class="annot" data-annot-id="lm-7">
+              <span class="annot-label">R7 查询项新增</span><br>
+              新增<strong class="annot-key">「审核状态」「申请日期（起止）」</strong>两个查询项；审核状态枚举：待审核 / 审核通过 / 审核驳回。
+            </div>
+            <div class="annot" data-annot-id="lm-8">
+              <span class="annot-label">R8 审核与列</span><br>
+              新增申请状态、申请时间、审核状态、审核时间、操作列；<strong class="annot-key">操作栏按审核状态</strong>给按钮：待审核【审核】，通过 / 驳回【查看】。
+            </div>
+            <div class="annot" data-annot-id="lm-9">
+              <span class="annot-label">R7 下级数据调整</span><br>
+              「下级数据调整」按钮打开「下级分润调整」弹窗（选择文件 / 下载模板 / 取消 / 确定，含上传成功、上传失败、清空三态），按钮<strong class="annot-key">不置灰</strong>。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="lm-10">
+              <span class="annot-label">R9 查看下级额外收取分润</span><br>
+              操作列新增<strong class="annot-key">查看下级额外收取分润</strong>，点击从右侧滑出抽屉，展示该行下级机构的额外收取明细（额外收取前金额 / 额外收取下级分润（本机构收取）/ 下级应分额（额外收取后）），与「查看月分润」为同一抽屉样式。该按钮<strong class="annot-key">不受「是否允许下级机构查看额外收取下级分润数据」开关控制</strong>——该开关只约束下级自身看到的展示粒度，上级视角恒可查看。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 查看月分润明细 ========== -->
+      <section class="page" id="page-month-detail">
+        <div class="notice">
+          明细数据以每月分润发布后查询结果为准；仅支持查询<strong>已发布</strong>月份（未发布/发布中/发布失败的月份不返回数据）。
+        </div>
+        <div class="panel">
+          <div class="filters">
+            <div class="field">
+              <label>分润日期</label>
+              <input class="input md" type="text" value="2026-09-20" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2026-09-20" readonly />
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看" style="margin-left:12px">导出汇总数据</button>
+            </div>
+            <div class="field"><label>商户编号</label><input class="input md" type="text" placeholder="请输入商户编号" /></div>
+            <div class="field">
+              <label>分润明细类型</label>
+              <select class="select md">
+                <option>全部</option><option>二维码</option><option>银行卡</option>
+                <option>结算</option><option>转账</option><option>代付</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>业务员</label>
+              <select class="select md"><option>全部</option><option>业务员A</option><option>业务员B</option></select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">列表导出</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr>
+                  <th>序号</th><th>交易日期</th><th>下级机构</th><th>商户编号</th><th>商户名称</th>
+                  <th>直属机构</th><th>直属机构名称</th><th>分润类型</th>
+                  <th class="num">交易分润金额</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>2025-06-12</td><td>11732862</td><td>M20250612001</td><td>示例商户一</td><td>11732861</td><td>生产测试代理</td><td>二维码</td><td class="num">0.40</td></tr>
+                <tr><td>2</td><td>2025-06-15</td><td>11732862</td><td>M20250615007</td><td>示例商户二</td><td>11732861</td><td>生产测试代理</td><td>银行卡</td><td class="num">0.50</td></tr>
+                <tr><td>3</td><td>2025-06-20</td><td>11732862</td><td>M20250620013</td><td>示例商户三</td><td>11732861</td><td>生产测试代理</td><td>增值产品</td><td class="num">1.11</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="md-1">
+              <span class="annot-label">R1 本页范围</span><br>
+              本页只做<strong class="annot-key">筛选条件调整 + 导出汇总数据按钮</strong>，不新增字段；「分润合计」「实发分润」两列在「查看下级月分润明细」页。
+            </div>
+            <div class="annot annot-dim" data-annot-id="md-2">
+              <span class="annot-label">R2 字段一致说明</span><br>
+              「查看与导出字段必须完全一致」是对<strong class="annot-key">查看下级月分润明细</strong>页的要求（统一含分润合计、实发金额），本页不适用。
+            </div>
+            <div class="annot annot-dim" data-annot-id="md-3">
+              <span class="annot-label">本页保持</span><br>
+              未发布 / 发布中 / 发布失败的月份不返回明细数据。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="md-4">
+              <span class="annot-label">R3 筛选与导出</span><br>
+              筛选条件按真实页面更新为<strong class="annot-key">分润日期 / 商户编号 / 分润明细类型 / 业务员</strong>，并在日期行增加<strong class="annot-key">「导出汇总数据」</strong>按钮。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 查看下级月分润明细 ========== -->
+      <section class="page" id="page-lower-month-detail">
+        <div class="panel">
+          <div class="page-head">
+            <h3 class="page-title">查看下级分润信息 <span class="help-dot">?</span></h3>
+          </div>
+          <div class="filters">
+            <div class="field">
+              <label>分润日期</label>
+              <input class="input md" type="text" value="2026-09-15" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2026-09-15" readonly />
+            </div>
+            <div class="btn-area push-right">
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出汇总数据 <span class="help-dot">?</span></button>
+            </div>
+            <div class="field">
+              <label>下级机构</label>
+              <select class="select md"><option>请选择下级机构</option><option>测试代理A</option></select>
+            </div>
+            <div class="field"><label>商户编号</label><input class="input md" type="text" placeholder="全部" /></div>
+            <div class="field"><label>发布状态</label><select class="select md"><option>全部</option><option>待发布</option><option>已自动发布</option><option>已手动发布</option></select></div>
+            <div class="field">
+              <label>分润明细类型</label>
+              <select class="select md">
+                <option>全部</option><option selected>二维码分润</option><option>银行卡分润</option><option>提现产品分润</option><option>其他结算产品分润</option><option>增值产品分润</option><option>代付分润</option>
+              </select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">列表导出 <span class="help-dot">?</span></button>
+            </div>
+          </div>
+
+          <div class="notice">明细数据以每月分润发布后查询结果为准</div>
+
+          <div class="stats">
+            <span>交易分润金额：<span class="stat-num">0</span></span>
+          </div>
+
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr>
+                  <th>序号</th><th>分润月份</th><th>发布状态</th><th>交易日期</th><th>下级机构</th><th>下级机构名称</th>
+                  <th>商户编号</th><th>商户名称</th><th>直属机构</th><th>直属机构名称</th>
+                  <th>交易金额</th><th>交易笔数</th><th>交易费率/封顶值</th><th>交易手续费</th>
+                  <th>通道软件费率</th><th>交易分润</th><th>农商行分润扣除</th><th>交易标识</th>
+                  <th>分润类型</th><th>非直属商户分润收益 <span class="help-dot">?</span></th>
+                  <th>额外收取下级分润比例(%) <span class="help-dot">?</span></th>
+                  <th>额外收取下级分润 <span class="help-dot">?</span></th>
+                  <th>应分下级分润 <span class="help-dot">?</span></th>
+                  <th class="num">分润合计</th><th class="num">实发金额</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td><td>2026-09</td><td>已自动发布</td><td>2026-09-15</td><td>100001</td><td>岳思辰的测试二级代理</td>
+                  <td>100000000213</td><td>岳思辰的测试商户</td><td>100000</td><td>岳思辰的测试二级代理</td>
+                  <td>0.00</td><td>4</td><td>0.25</td><td>0.00</td><td>太米智慧油站: 0.02</td><td>0.00</td>
+                  <td>-</td><td>线下标准</td><td>微信-借</td><td>0.00</td><td>0</td><td>0.02（下级不可查看）</td><td>0.00</td><td class="num">0.02</td><td class="num">0.018</td>
+                </tr>
+                <tr>
+                  <td>2</td><td>2026-09</td><td>已手动发布</td><td>2026-09-15</td><td>100002</td><td>岳思辰的测试二级代理</td>
+                  <td>100000000214</td><td>岳思辰的测试商户2</td><td>100000</td><td>岳思辰的测试二级代理</td>
+                  <td>0.02</td><td>2</td><td>0.25</td><td>0.00</td><td>途通交易测试专用应用: 0.02</td><td>0.00</td>
+                  <td>-</td><td>线下标准</td><td>抖音-借</td><td>0.00</td><td>0</td><td>0.02（下级可查看）</td><td>0.00</td><td class="num">0.02</td><td class="num">0.018</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 0 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="lmd-1">
+              <span class="annot-label">R1 本页改动</span><br>
+              按《下级机构分润功能整合》原文，本页与「查看下级分润」两页改动同时生效：新增<strong class="annot-key">【发布状态】</strong>筛选与列（待发布 / 已自动发布 / 已手动发布），并在<strong class="annot-key">【额外收取下级分润】</strong>后加注「下级可查看 / 下级不可查看」；同时补齐<strong class="annot-key">分润合计、实发金额</strong>两列，与「查看下级分润」口径一致。
+            </div>
+            <div class="annot annot-dim" data-annot-id="lmd-2">
+              <span class="annot-label">原文范围说明</span><br>
+              原始 docx 该节标题为「查看下级分润<strong class="annot-key">/查看下级分润明细</strong>页面」，两条改动对<strong class="annot-key">两页同时生效</strong>。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 查看日分润（一级机构） ========== -->
+      <section class="page" id="page-daily">
+        <div class="panel">
+          <div class="filters">
+            <div class="field">
+              <label>选择日期</label>
+              <input class="input md" type="text" value="2025-06-01" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2025-06-30" readonly />
+            </div>
+            <div class="field">
+              <label>结算周期</label>
+              <select class="select md"><option>全部</option><option>D0</option><option>D1</option><option>D7</option></select>
+            </div>
+            <div class="field">
+              <label>一级费率不一致</label>
+              <select class="select md"><option>全部</option><option>是</option><option>否</option></select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
+            </div>
+          </div>
+          <div class="stats">
+            <span><span class="badge">1</span>分润合计：<span class="stat-num">12.86</span></span>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr>
+                  <th>序号</th><th>交易日期</th><th>结算周期</th><th class="num">银行卡分润</th><th class="num">二维码分润</th>
+                  <th class="num">提现产品分润</th><th class="num">其他结算产品分润</th><th class="num">增值产品分润</th>
+                  <th class="num">分润合计</th><th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>2025-06-30</td><td>D7</td><td class="num">2.00</td><td class="num">1.60</td><td class="num">1.00</td><td class="num">0.40</td><td class="num">1.00</td><td class="num">6.00</td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+                <tr><td>2</td><td>2025-06-29</td><td>D1</td><td class="num">1.20</td><td class="num">1.10</td><td class="num">0.80</td><td class="num">0.30</td><td class="num">0.90</td><td class="num">4.30</td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+                <tr><td>3</td><td>2025-06-28</td><td>D0</td><td class="num">0.70</td><td class="num">0.66</td><td class="num">0.50</td><td class="num">0.20</td><td class="num">0.50</td><td class="num">2.56</td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="d-1">
+              <span class="annot-label">R1 口径修复</span><br>
+              <strong class="annot-key">分润合计</strong>调整至图示位置，与月分润列表口径统一。
+            </div>
+            <div class="annot" data-annot-id="d-2">
+              <span class="annot-label">R2 字段隐藏</span><br>
+              <strong class="annot-key">实发金额、开票金额、扣除税点</strong>字段隐藏不再展示。
+            </div>
+            <div class="annot" data-annot-id="d-3">
+              <span class="annot-label">R3 申请入口取消</span><br>
+              <strong class="annot-key">筛选区不设「申请分润」按钮</strong>，页面申请入口统一从「查看月分润」进入（真实系统该页原有此按钮，见《原型参考-真实页面截图清单》图3）。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 查看日分润明细 ========== -->
+      <section class="page" id="page-daily-detail">
+        <div class="panel">
+          <div class="filters">
+            <div class="field">
+              <label>交易日期</label>
+              <input class="input md" type="text" value="2025-06-01" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2025-06-30" readonly />
+            </div>
+            <div class="field"><label>商户编号</label><input class="input md" type="text" placeholder="请输入商户编号" /></div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr><th>序号</th><th>交易日期</th><th>商户编号</th><th>商户名称</th><th>分润类型</th><th class="num">交易分润金额</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>2025-06-30</td><td>M20250630001</td><td>示例商户一</td><td>二维码</td><td class="num">1.60</td></tr>
+                <tr><td>2</td><td>2025-06-30</td><td>M20250630002</td><td>示例商户二</td><td>银行卡</td><td class="num">2.00</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 2 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-dim" data-annot-id="dd-1">
+              <span class="annot-label">本期不动</span><br>
+              本页本期不改动：日分润的改动只落在<strong class="annot-key">「查看日分润（一级机构）」与「查看下级日分润」</strong>两页。
+            </div>
+            <div class="annot annot-dim" data-annot-id="dd-2">
+              <span class="annot-label">口径说明</span><br>
+              本页维持现状字段（交易分润金额），<strong class="annot-key">不新增分润合计 / 实发分润</strong>。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 查看下级日分润 ========== -->
+      <section class="page" id="page-lower-daily">
+        <div class="panel">
+          <div class="filters">
+            <div class="field">
+              <label>选择日期</label>
+              <input class="input md" type="text" value="2025-06-01" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2025-06-30" readonly />
+            </div>
+            <div class="field">
+              <label>下级机构</label>
+              <select class="select md"><option>请选择下级机构</option><option>测试代理A</option><option>测试代理B</option></select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
+            </div>
+          </div>
+          <div class="stats">
+            <span><span class="badge">1</span>下级分润合计：<span class="stat-num">18.60</span></span>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr>
+                  <th>序号</th><th>交易日期</th><th>下级机构</th><th>下级机构名称</th>
+                  <th class="num">非直属商户分润收益合计</th><th class="num">下级分润合计</th>
+                  <th class="num">银行卡分润</th><th class="num">二维码分润</th><th class="num">增值产品分润</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>2025-06-30</td><td>11732862</td><td>测试代理A</td><td class="num">0.12</td><td class="num">6.00</td><td class="num">2.00</td><td class="num">1.60</td><td class="num">1.00</td></tr>
+                <tr><td>2</td><td>2025-06-30</td><td>11732863</td><td>测试代理B</td><td class="num">0.00</td><td class="num">4.30</td><td class="num">1.20</td><td class="num">1.10</td><td class="num">0.90</td></tr>
+                <tr><td>3</td><td>2025-06-29</td><td>11732862</td><td>测试代理A</td><td class="num">0.08</td><td class="num">8.30</td><td class="num">3.00</td><td class="num">2.40</td><td class="num">1.50</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="ld-1">
+              <span class="annot-label">R1 新增统计</span><br>
+              表头上方新增<strong class="annot-key">「下级分润合计」</strong>统计，取「下级分润合计」列求和，且<strong class="annot-key">不随查询条件变化</strong>。
+            </div>
+            <div class="annot annot-dim" data-annot-id="ld-2">
+              <span class="annot-label">本页保持</span><br>
+              列表字段与筛选条件维持现状（交易日期 / 下级机构 / 非直属商户分润收益合计 / 下级分润合计 / 银行卡、二维码、增值产品分润），本期不加「发布状态」筛选。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 查看下级日分润明细 ========== -->
+      <section class="page" id="page-lower-daily-detail">
+        <div class="panel">
+          <div class="filters">
+            <div class="field">
+              <label>交易日期</label>
+              <input class="input md" type="text" value="2025-06-01" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2025-06-30" readonly />
+            </div>
+            <div class="field">
+              <label>下级机构</label>
+              <select class="select md"><option>请选择下级机构</option><option>测试代理A</option></select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr><th>序号</th><th>交易日期</th><th>下级机构</th><th>商户编号</th><th>分润类型</th><th class="num">交易分润金额</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>2025-06-30</td><td>11732862</td><td>M20250630001</td><td>二维码</td><td class="num">1.60</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 1 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-dim" data-annot-id="ldd-1">
+              <span class="annot-label">本期不动</span><br>
+              本页本期<strong class="annot-key">不改动</strong>：日分润明细两页（查看日分润明细 / 查看下级日分润明细）均维持现状字段。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== CSP-账号管理-下级机构管理-编辑 ========== -->
+      <section class="page" id="page-org-config">
+        <div class="notice">
+          <strong>本页位置</strong>：CSP 顶级导航「账号管理」→ 左侧二级菜单「下级机构管理」→ 编辑。<strong>不在</strong>顶级导航「分润管理」的左侧菜单下——「分润管理」模块的左侧菜单只有月分润、日分润、发票、机构分润四组。<br>
+          设置下级签约费率后，系统将为您计算下级机构的分润数据，您可以选择是否允许下级查看分润数据。
+        </div>
+        <div class="panel">
+          <h3 class="form-block-title">基础信息</h3>
+          <div class="form-row"><label class="lb">机构名称</label><input class="input" style="width:280px" type="text" value="测试代理A" readonly /></div>
+          <div class="form-row"><label class="lb">实际经营地址</label><input class="input" style="width:280px" type="text" value="上海市浦东新区示例路 1 号" readonly /></div>
+          <div class="form-row"><label class="lb">主要业务</label><input class="input" style="width:280px" type="text" value="收单业务" readonly /></div>
+          <div class="form-row"><label class="lb">联系人姓名</label><input class="input" style="width:280px" type="text" value="张三" readonly /></div>
+          <div class="form-row"><label class="lb">联系人手机号</label><input class="input" style="width:280px" type="text" value="138****8888" readonly /></div>
+
+          <h3 class="form-block-title" style="margin-top:22px">下级分润设置</h3>
+          <div class="form-row">
+            <label class="lb">查看分润权限</label>
+            <div class="radio-group">
+              <label><input type="radio" name="shareRight" value="on" checked data-toggle-block="block-apply-right,block-view-extra" /> 开</label>
+              <label><input type="radio" name="shareRight" value="off" data-toggle-block="block-apply-right,block-view-extra" /> 关</label>
+            </div>
+            <span class="tip-text">（父权限：仅联动下方「允许下级申请分润」「是否允许下级机构查看额外收取下级分润数据」两项；额外收取比例、发布设置常显）</span>
+          </div>
+
+          <div id="block-apply-right">
+            <div class="form-row">
+              <label class="lb">允许下级申请分润</label>
+              <div class="radio-group">
+                <label><input type="radio" name="allowApply" value="on" checked data-toggle-apply /> 开</label>
+                <label><input type="radio" name="allowApply" value="off" data-toggle-apply /> 关</label>
+              </div>
+              <span class="tip-text">（系统默认开，原型默认同取「开」。当前演示状态为「开」：下级可见「申请分润」入口并可申请，历史分润提示文案与「申请历史分润」入口随可申请金额一并展示；切到「关」可预览下级「完全看不到申请入口」的状态，此时历史分润提示文案与入口同样隐藏）</span>
+            </div>
+            <div class="form-row" id="block-view-extra">
+              <label class="lb">是否允许查看额外收取分润</label>
+              <div class="radio-group">
+                <label><input type="radio" name="viewExtra" value="yes" data-toggle-month-extra /> 允许</label>
+                <label><input type="radio" name="viewExtra" value="no" checked data-toggle-month-extra /> 不允许</label>
+              </div>
+              <span class="tip-text">（默认不允许。控制对象＝下级能否查看额外收取前信息；仅影响 CSP 下级页展示，小随管家不受影响）</span>
+            </div>
+          </div>
+
+          <div class="form-row" style="align-items:flex-start;margin-top:16px">
+            <label class="lb" style="padding-top:6px">额外收取下级分润比例设置</label>
+            <div style="flex:1">
+
+              <div class="form-row" style="margin-bottom:10px">
+                <label class="lb" style="width:230px">设置额外收取比例</label>
+                <div class="radio-group">
+                  <label><input type="radio" name="extraMode" value="unified" checked data-toggle-block="block-unified,block-split" /> 统一收取</label>
+                  <label><input type="radio" name="extraMode" value="split" data-toggle-block="block-unified,block-split" /> 分别收取</label>
+                </div>
+                <span class="tip-text">（常显，不受「查看分润权限」控制；二选一必填，切换可实时预览两种输入形态）</span>
+              </div>
+
+              <div id="block-unified" data-mode="unified" style="background:#fafbfc;border:1px solid #e5e6eb;border-radius:3px;padding:12px;max-width:620px">
+                <div class="form-row" style="margin-bottom:0"><label class="lb" style="width:150px">统一收取比例</label><input class="input sm rate-input" type="text" placeholder="0-100 整数" /> %</div>
+                <div class="tip-text" style="margin-top:8px">必填，仅支持 0-100 的整数。按「分润合计」整笔额外收取（现状口径）：额外收取总额 = 分润合计 × 统一比例 / 100，应发总额 = 分润合计 − 额外收取总额；向下级展示时按同一比例逐细项拆分，只改展示粒度、不改金额。</div>
+              </div>
+
+              <div id="block-split" data-mode="split" class="hide" style="background:#fafbfc;border:1px solid #e5e6eb;border-radius:3px;padding:12px;max-width:620px">
+                <div class="form-row"><label class="lb" style="width:110px">扫码交易</label><input class="input sm rate-input" type="text" placeholder="0-100 整数" /> %</div>
+                <div class="form-row"><label class="lb" style="width:110px">刷卡交易</label><input class="input sm rate-input" type="text" placeholder="0-100 整数" /> %</div>
+                <div class="form-row"><label class="lb" style="width:110px">订单分账</label><input class="input sm rate-input" type="text" placeholder="0-100 整数" /> %</div>
+                <div class="form-row"><label class="lb" style="width:110px">余额分账</label><input class="input sm rate-input" type="text" placeholder="0-100 整数" /> %</div>
+                <div class="form-row" style="margin-bottom:0"><label class="lb" style="width:110px">提现产品</label><input class="input sm rate-input" type="text" placeholder="0-100 整数" /> %</div>
+                <div class="tip-text" style="margin-top:8px">选中「分别收取」后以上 5 项均为必填；仅支持 0-100 的整数。第 6 项「其他结算」无额外收取比例输入框、不额外收取，按原值计入应发总额。</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top:16px">
+            <label class="lb">下级分润发布设置</label>
+            <div class="radio-group">
+              <label><input type="radio" name="pushMode" value="auto" checked /> 自动发布</label>
+              <label><input type="radio" name="pushMode" value="manual" /> 手动发布</label>
+            </div>
+            <span class="tip-text">（常显，不受「查看分润权限」控制；上级页面「发布状态」列依赖此配置取值）</span>
+          </div>
+
+          <div class="form-row" id="demo-history-remain" style="margin-top:16px;padding:10px 12px;border:1px dashed #91caff;background:#f2f8ff;border-radius:3px">
+            <label class="lb">（演示开关）可申请的历史分润金额</label>
+            <div class="field">
+              <input class="input sm" type="text" id="history-remain-input" value="10000" style="width:130px" />
+              <span class="tip-text">元（评审演示用，可改数值；支持小数，留空或填 0 均按 0 处理）</span>
+            </div>
+            <span class="tip-text" id="history-remain-status" style="color:#1677ff;font-weight:600"></span>
+            <span class="tip-text">（仅用于演示本规则，不是真实配置项、也不写入 PRD。规则：可申请金额 &gt; 0 时，才展示【查看月分润】的提示文案「您有 X 元可按金额申请的历史分润金额。」与「申请历史分润」入口；可申请金额 = 0 时，文案与入口一并隐藏。前置条件：上方「允许下级申请分润」为「关」时，可申请金额按 0 处理，填任何金额都不会展示）</span>
+          </div>
+
+          <div class="btn-area" style="margin-top:20px;justify-content:flex-end">
+            <button class="btn" data-toast="已取消">取消</button>
+            <button class="btn btn-primary" id="btn-save-config">保存</button>
+          </div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="cfg-1">
+              <span class="annot-label">R1 新增配置区块</span><br>
+              新增<strong class="annot-key">下级分润设置</strong>区块，含五项：查看分润权限（父权限）、允许下级申请分润、是否允许查看额外收取分润、设置额外收取比例、下级分润发布设置。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="cfg-2">
+              <span class="annot-label">R2 显隐收窄</span><br>
+              随「查看分润权限」显隐的是<strong class="annot-key">「允许下级申请分润」与「是否允许下级机构查看额外收取下级分润数据」两项</strong>；额外收取比例设置与发布设置常显。
+            </div>
+            <div class="annot" data-annot-id="cfg-3">
+              <span class="annot-label">R3 额外收取比例</span><br>
+              单选<strong class="annot-key">统一收取 / 分别收取</strong>，二选一必填；比例输入框仅允许 [0,100] 的整数，统一收取展开 1 个输入框、分别收取展开 5 个细项输入框。
+            </div>
+            <div class="annot" data-annot-id="cfg-4">
+              <span class="annot-label">R4 发布设置</span><br>
+              单选<strong class="annot-key">自动发布 / 手动发布</strong>，默认自动发布；该配置是上级页「发布状态」列的取值来源，故设为常显。
+            </div>
+            <div class="annot" data-annot-id="cfg-5">
+              <span class="annot-label">R5 调整入口位置</span><br>
+              「下级数据调整」上传入口随本期交付，入口位于「查看下级月分润」页筛选区。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="cfg-6">
+              <span class="annot-label">R5 申请开关（新增）</span><br>
+              新增<strong class="annot-key">「允许下级申请分润」</strong>开关：属「查看分润权限」子权限、同入口配置；关闭后下级<strong class="annot-key">完全看不到申请入口</strong>（不做置灰提示）；存量机构系统默认开。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="cfg-7">
+              <span class="annot-label">R6 口径改写</span><br>
+              「是否允许下级机构查看额外收取下级分润数据」的控制对象是<strong class="annot-key">下级能否看到额外收取前信息</strong>：允许 → 额外收取前细项 + 额外收取金额 + 额外收取后细项；不允许 → 仅额外收取后细项，且不展示额外收取金额列。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 机构分润-下级申请管理（功能已升级提示） ========== -->
+      <section class="page" id="page-migrate">
+        <div class="panel" style="text-align:center;padding:48px 20px">
+          <div style="font-size:30px;color:#ffb020;line-height:1">!</div>
+          <h2 style="font-size:16px;margin:12px 0 8px">功能已升级</h2>
+          <p style="color:#4e5969;margin:0 0 20px">下级申请管理功能已升级，请前往【查看下级月分润】页面查看及审核</p>
+          <div class="btn-area" style="justify-content:center;align-items:center">
+            <button class="btn btn-primary" data-page-jump="page-lower-month">前往查看下级月分润</button>
+            <button class="btn-link" id="history-apply-entry" data-page-jump="page-history-apply-original">申请历史分润 ›</button>
+          </div>
+          <div id="history-apply-tip" style="margin-top:12px;font-size:12px;color:#86909c;line-height:20px">
+            上线前已发布但未申请的历史金额，仍可继续按金额申请。
+          </div>
+          <div class="annot-layer">
+            <div class="annot" data-annot-id="h-1">
+              <span class="annot-label">申请历史分润</span><br>
+              上线前<strong class="annot-key">已发布但未申请</strong>的历史金额仍按金额申请：本入口<strong class="annot-key">跳转至原「申请分润」页面</strong>（即上线前的按金额申请页）。该页不在本期改造范围内，原型仅以占位页标示跳转目标。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="h-2">
+              <span class="annot-label">升级提示文案</span><br>
+              本页展示<strong class="annot-key">【下级申请管理】</strong>的功能升级文案，引导至「查看下级月分润」审核。
+            </div>
+            <div class="annot annot-dim" data-annot-id="h-3">
+              <span class="annot-label">待确认</span><br>
+              本页为<strong class="annot-key">跳转提示</strong>形态；「机构分润-下级申请管理」菜单在历史待审核分润总计为 0 后隐藏，该菜单隐藏后机构分润一级菜单不再展示。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 历史申请记录 ========== -->
+      <section class="page" id="page-history">
+        <div class="panel">
+          <div class="filters">
+            <div class="field">
+              <label>申请日期</label>
+              <input class="input md" type="text" value="2022-02-01" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2024-04-23" readonly />
+            </div>
+            <div class="field">
+              <label>审核状态</label>
+              <select class="select md"><option>全部</option><option>待审核</option><option>审核通过</option><option>审核驳回</option></select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr><th>序号</th><th>申请时间</th><th>审核时间</th><th class="num">申请分润</th><th class="num">实发分润</th><th>审核状态</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>2024-04-18 10:12:30</td><td>2024-04-20 09:30:11</td><td class="num">3.00</td><td class="num">2.82</td><td><span class="tag tag-green">审核通过</span></td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+                <tr><td>2</td><td>2024-03-18 15:02:44</td><td>2024-03-20 11:20:05</td><td class="num">2.00</td><td class="num">1.88</td><td><span class="tag tag-green">审核通过</span></td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+                <tr><td>3</td><td>2024-02-19 09:41:12</td><td>--</td><td class="num">1.00</td><td class="num">--</td><td><span class="tag tag-red">审核驳回</span></td><td><button class="btn-link" data-modal="modal-view-pending">查看</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="his-1">
+              <span class="annot-label">R1 保留页面与入口</span><br>
+              本页<strong class="annot-key">保留</strong>：用于查看历史申请流水；入口在「查看月分润」与「查看下级月分润」页的「申请记录 / 历史申请记录」按钮。
+            </div>
+            <div class="annot annot-dim" data-annot-id="his-2">
+              <span class="annot-label">待确认</span><br>
+              本页保留用于查看历史申请流水；历史数据申请完毕后本页入口是否关闭，待业务方确认。
+            </div>
+            <div class="annot annot-dim" data-annot-id="his-3">
+              <span class="annot-label">历史数据口径</span><br>
+              「查看月分润」历史月份行的申请 / 审核状态展示<strong class="annot-key">「-」</strong>；待申请额度申请完毕后入口自动关闭。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 新功能提示（各类机构文案）· 说明页 ========== -->
+      <section class="page" id="page-guide-spec">
+        <div class="notice">
+          下列提示文案依据《支持下级机构按月申请分润 V1.0》的「新功能提示」章节原文：「功能上线后机构首次进入分润相关模块，展示新功能提示，点击【我知道了】下次进入分润模块继续提示，点击【不再提示】后不再提示。需注意针对不同机构展示不同提示内容。」
+        </div>
+        <div class="guide-list">
+
+          <div class="guide-card">
+            <div class="guide-card-head">
+              <span class="guide-card-scope">一级机构 / 下级机构 · 查看下级月分润</span>
+              <span class="guide-card-form">弹窗提示</span>
+            </div>
+            <div class="guide-demo">
+              <div class="guide-demo-head"><span>下级机构分润审核功能升级</span><span class="guide-demo-x">×</span></div>
+              <div class="guide-demo-body">
+                在【查看下级月分润页面】可直接看到下级机构每个月的分润申请情况，对下级机构的分润申请进行审核/批量审核；审核过的数据点击“查看”可以查看申请、审核详情。
+              </div>
+              <div class="guide-figure"><img src="images/guide-submonth-apply-audit.png" alt="新功能提示指引图" /></div>
+              <div class="guide-demo-foot">
+                <button class="btn" data-toast="已设置，后续进入分润模块不再提示">不再提示</button>
+                <button class="btn btn-primary" data-toast="已关闭，下次进入分润模块继续提示">我知道了</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-card-head">
+              <span class="guide-card-scope">下级机构 · 查看月分润</span>
+              <span class="guide-card-form">弹窗提示</span>
+            </div>
+            <div class="guide-demo">
+              <div class="guide-demo-head"><span>下级机构分润申请、审核功能升级</span><span class="guide-demo-x">×</span></div>
+              <div class="guide-demo-body">
+                1、支持下级机构按月申请分润，在【查看月分润页面】点击申请/批量申请分润<br />
+                2、进入分润申请页面，选择要申请的分润，填写申请金额（选填），提交申请<br />
+                3、在【查看月分润页面】可查看申请、审核结果
+              </div>
+              <div class="guide-demo-foot">
+                <button class="btn" data-toast="已设置，后续进入分润模块不再提示">不再提示</button>
+                <button class="btn btn-primary" data-toast="已关闭，下次进入分润模块继续提示">我知道了</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="guide-card">
+            <div class="guide-card-head">
+              <span class="guide-card-scope">机构分润 · 下级申请管理</span>
+              <span class="guide-card-form">页面跳转提示</span>
+            </div>
+            <div class="guide-demo">
+              <div class="guide-demo-body guide-demo-plain">
+                下级申请管理功能已升级，请前往【查看下级月分润】页面查看及审核
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ========== 原「申请分润」页面（跳转目标 · 占位） ========== -->
+      <section class="page" id="page-history-apply-original">
+        <div class="panel placeholder-canvas">
+          跳转至原分润金额申请页
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ===== 申请分润弹窗 ===== -->
+<div class="mask" id="modal-apply">
+  <div class="modal wide">
+    <div class="modal-head"><span>申请分润</span><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="modal-stats">
+        <span>已选分润合计：<b id="apply-sel-profit">0.00</b></span>
+        <span>待申请分润总计：<b>100.00</b></span>
+      </div>
+      <div class="table-scroll">
+        <table class="grid">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="apply-check-all" /></th>
+              <th>序号</th><th>分润月份</th><th>申请状态</th>
+              <th class="num">银行卡分润</th><th class="num">二维码分润</th>
+              <th class="num">提现产品分润</th><th class="num">其他结算产品分润</th>              <th class="num">增值产品分润</th>
+              <th class="num">分润合计</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="checkbox" class="apply-check" data-profit="1.96" /></td>
+              <td>1</td><td>2024-03</td><td><span class="tag tag-orange">待申请</span></td>
+              <td class="num">0.30</td><td class="num">0.40</td><td class="num">0.20</td><td class="num">0.20</td><td class="num">0.86</td>
+              <td class="num">1.96</td>
+            </tr>
+            <tr>
+              <td><input type="checkbox" class="apply-check" data-profit="1.80" /></td>
+              <td>2</td><td>2024-02</td><td><span class="tag tag-red">待修改</span></td>
+              <td class="num">0.28</td><td class="num">0.36</td><td class="num">0.18</td><td class="num">0.18</td><td class="num">0.80</td>
+              <td class="num">1.80</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:#4e5969">总计：<b id="apply-count">0</b> 条</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close>返回</button>
+      <button class="btn btn-primary" id="btn-apply-submit" disabled>提交申请</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 查看详情弹窗（待申请/待审核/待修改） ===== -->
+<div class="mask" id="modal-view-pending">
+  <div class="modal narrow">
+    <div class="modal-head"><span>查看详情</span><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="detail-row"><span class="dt">申请日期</span><span class="dd">2024-03-05 15:10:23</span></div>
+      <div class="detail-row"><span class="dt">申请分润</span><span class="dd">1.80</span></div>
+      <div class="detail-row"><span class="dt">申请备注</span><span class="dd">请尽快审核，谢谢</span></div>
+      <div class="detail-row"><span class="dt">审核备注</span><span class="dd">申请金额与明细不符，请修改后重新提交</span></div>
+    </div>
+    <div class="modal-foot"><button class="btn" data-close>关闭</button></div>
+  </div>
+</div>
+
+<!-- ===== 查看详情弹窗（已完成） ===== -->
+<div class="mask" id="modal-view-done">
+  <div class="modal narrow">
+    <div class="modal-head"><span>查看详情</span><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="detail-row"><span class="dt">申请日期</span><span class="dd">2024-02-06 10:02:11</span></div>
+      <div class="detail-row"><span class="dt">申请分润</span><span class="dd">1.66</span></div>
+      <div class="detail-row"><span class="dt">申请备注</span><span class="dd">--</span></div>
+      <div class="detail-row"><span class="dt">审核备注</span><span class="dd">审核通过</span></div>
+      <div class="detail-row"><span class="dt">扣除税点</span><span class="dd">6%</span></div>
+      <div class="detail-row"><span class="dt">实发分润</span><span class="dd">1.56</span></div>
+    </div>
+    <div class="modal-foot"><button class="btn" data-close>关闭</button></div>
+  </div>
+</div>
+
+<!-- ===== 审核弹窗（单条） ===== -->
+<div class="mask" id="modal-audit">
+  <div class="modal">
+    <div class="modal-head"><span>审核</span><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="modal-stats"><span>下级申请分润合计：<b>1.80</b></span></div>
+      <div class="table-scroll">
+        <table class="grid">
+          <thead>
+            <tr><th>分润月份</th><th class="num">应分下级分润</th><th class="num">申请分润</th><th>申请备注</th><th class="num">扣除税点</th><th class="num">实发金额</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2024-02</td><td class="num">1.80</td><td class="num">1.80</td><td>请尽快审核</td>
+              <td class="num"><input class="input sm tax-input" type="text" value="6" readonly /> %</td>
+              <td class="num real-amt">1.692</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-row" style="margin-top:14px">
+        <label class="lb" style="width:80px">审核备注</label>
+        <input class="input" style="flex:1" type="text" placeholder="选填" />
+      </div>
+      <div class="tip-text">税点由服务端按机构签约主体配置下发，审核页<strong>只读不可改</strong>。</div>
+    </div>
+    <div class="modal-foot">
+      <span class="foot-left">已选实发金额合计：<b>¥1.692</b></span>
+      <button class="btn btn-primary" data-toast="已驳回，状态更新为待修改">驳回</button>
+      <button class="btn btn-primary" data-toast="审核通过，实发分润已生成">通过</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 批量审核弹窗 ===== -->
+<div class="mask" id="modal-batch-audit">
+  <div class="modal wide">
+    <div class="modal-head"><span>批量审核</span><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="modal-stats"><span>下级申请分润合计：<b id="audit-sel-profit">0.00</b></span></div>
+      <div class="table-scroll">
+        <table class="grid">
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="audit-check-all" /></th>
+              <th>分润月份</th><th>下级机构</th><th class="num">应分下级分润</th><th class="num">申请分润</th>
+              <th>申请备注</th><th class="num">扣除税点</th><th class="num">实发金额</th>
+            </tr>
+          </thead>
+          <tbody id="audit-tbody"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:#4e5969">总计：<b id="audit-count">0</b> 条</div>
+      <div class="form-row" style="margin-top:10px">
+        <label class="lb" style="width:80px">审核备注</label>
+        <input class="input" style="flex:1" type="text" placeholder="选填" />
+      </div>
+    </div>
+    <div class="modal-foot">
+      <span class="foot-left">已选实发金额合计：<b id="audit-sel-amt">¥0.000</b></span>
+      <button class="btn btn-primary" data-toast="已驳回，状态更新为待修改">驳回</button>
+      <button class="btn btn-primary" data-toast="批量审核通过，实发分润已生成">通过</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 下级数据调整弹窗 ===== -->
+<div class="mask" id="modal-adjust">
+  <div class="modal narrow">
+    <div class="modal-head"><span>下级分润调整</span><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body">
+      <div class="upload-row">
+        <label style="width:66px;color:#4e5969">选择文件</label>
+        <button class="btn" id="btn-pick-file">上传文件</button>
+        <button class="btn" data-toast="模板已开始下载：下级分润调整模板.xlsx">下载模板</button>
+      </div>
+      <div id="file-chip-wrap" class="hide" style="margin:6px 0 0 66px">
+        <span class="file-chip"><span>下级机构xxx的调整文件.xls</span><span class="del" id="file-del">×</span></span>
+      </div>
+      <div class="err-text hide" id="file-err">上传失败！仅支持上传 xls、xlsx 格式的文件</div>
+      <div class="tip-text" style="margin-top:12px;line-height:1.9">
+        模板列：分润月份（YYYY-MM）、下级机构编号（仅直属下级）、调整金额（数字 / 小数点 / 负号，支持 2 位小数，正加负减）。<br />
+        点击确定后异步解析校验，结果请前往执行结果页查看。
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close>取消</button>
+      <button class="btn btn-primary" data-toast="操作成功，请前往执行结果页查看执行结果">确定</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 新功能提示弹窗（文案按机构/菜单动态带入） ===== -->
+<div class="mask" id="modal-guide">
+  <div class="modal narrow">
+    <div class="modal-head"><span id="guide-title">下级机构分润申请、审核功能升级</span><button class="modal-close" data-close>×</button></div>
+    <div class="modal-body guide-body" id="guide-body"></div>
+    <div class="modal-foot">
+      <button class="btn" id="guide-never">不再提示</button>
+      <button class="btn btn-primary" id="guide-ok" data-close>我知道了</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- 右侧抽屉：月份分润构成明细 -->
+<div class="drawer-mask" id="month-extra-drawer-mask">
+  <div class="drawer">
+    <div class="drawer-head">
+      <span id="month-extra-drawer-title">额外收取分润</span>
+      <button class="drawer-close" data-close-drawer>×</button>
+    </div>
+    <div class="drawer-body" id="month-extra-drawer-body"></div>
+  </div>
+</div>
+
+<script src="js/app.js?v=20260923f"></script><script src="js/annot-drag.js?v=20260923f"></script>
+</body>
+</html>
