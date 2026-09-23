@@ -155,9 +155,9 @@ body {
 .notice.warn { background: #fff7e8; border-color: #ffd591; color: #b76a00; }
 
 /* 历史分润提示条：金额 + 申请入口，紧凑一行排列 */
-.notice-history { display: flex; align-items: center; gap: 12px; padding: 6px 12px; background: #f0f5ff; border: 1px solid #bcdcff; color: #1d39c4; }
+.notice-history { display: flex; align-items: center; gap: 12px; padding: 6px 12px; }
 .notice-history .notice-history-text { flex: 0 1 auto; }
-.notice-history .notice-history-amount { font-weight: 600; color: #1d39c4; }
+.notice-history .notice-history-amount { font-weight: 600; color: #b76a00; }
 .notice-history .btn { flex-shrink: 0; }
 
 /* 新功能提示指引图 */
