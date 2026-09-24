@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>分润系统 · 下级分润方案原型</title>
-<link rel="stylesheet" href="css/style.css?v=20260924a" /><link rel="stylesheet" href="css/annot.css?v=20260924a" />
+<link rel="stylesheet" href="css/style.css?v=20260924b" /><link rel="stylesheet" href="css/annot.css?v=20260924b" />
 </head>
 <body>
 
@@ -123,7 +123,6 @@
               <button class="btn btn-primary" data-toast="查询成功">查询</button>
               <button class="btn" data-toast="已重置">重置</button>
               <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
-              <!-- 分润确认按钮已删除：非一级机构不展示确认功能 -->
               <button class="btn" data-page-jump="page-history">申请记录</button>
             </div>
           </div>
@@ -198,7 +197,6 @@
                   <td class="num">0.80</td><td class="num">1.80</td>
                   <td>
                     <button class="btn-link" data-modal="modal-apply" data-allow-apply>申请分润</button>
-                    <!-- 查看按钮已删除：如需查看可去申请记录 -->
                     <button class="btn-link btn-toggle-detail" data-detail-target="detail-2">查看额外收取分润</button>
                   </td>
                 </tr>
@@ -207,7 +205,7 @@
                   <td class="num">1.66</td><td><span class="tag tag-green">已完成</span></td>
                   <td class="num">0.26</td><td class="num">0.34</td><td class="num">0.16</td><td class="num">0.16</td>
                   <td class="num">0.74</td><td class="num">1.66</td>
-                  <td><!-- 查看按钮已删除 --><button class="btn-link btn-toggle-detail" data-detail-target="detail-3">查看额外收取分润</button></td>
+                  <td><button class="btn-link btn-toggle-detail" data-detail-target="detail-3">查看额外收取分润</button></td>
                 </tr>
               </tbody>
             </table>
@@ -333,7 +331,6 @@
                   <td><span class="tag tag-blue">待审核</span></td><td>--</td>
                   <td>
                     <button class="btn-link" data-modal="modal-audit">审核</button>
-                    <!-- 查看下级额外收取分润按钮已删除：本页不做该功能 -->
                   </td>
                 </tr>
                 <tr>
@@ -374,7 +371,7 @@
             <div class="annot annot-highlight" data-annot-id="lm-3">
               <span class="annot-label">额外收取列展示</span><br>
               「额外收取下级分润合计」列<strong class="annot-key">直接展示原值</strong>（0.85 / 0.60 / 0.96），不加任何后缀标注。<br>
-              <strong class="annot-key">「（下级可查看 / 下级不可查看）」加注本期不做</strong>：原计划在【查看下级月分润明细】页【额外收取下级分润】列后加该标注，现一并取消，本功能不做。
+              <strong class="annot-key">「（下级可查看 / 下级不可查看）」加注本期不做</strong>：【查看下级月分润明细】页【额外收取下级分润】列直接展示原值，不加任何后缀标注。
             </div>
             <div class="annot" data-annot-id="lm-4">
               <span class="annot-label">批量审核</span><br>
@@ -402,7 +399,7 @@
             </div>
             <div class="annot annot-dim" data-annot-id="lm-10">
               <span class="annot-label">不做项</span><br>
-              本页<strong class="annot-key">不提供「查看下级额外收取分润」入口</strong>（本次确认不做该功能）：操作列仅保留审核相关按钮，不展示额外收取明细抽屉。
+              本页<strong class="annot-key">不提供「查看下级额外收取分润」入口</strong>：操作列仅保留审核相关按钮，不展示额外收取明细抽屉。
             </div>
           </div>
         </div>
@@ -559,7 +556,7 @@
             </div>
             <div class="annot annot-dim" data-annot-id="lmd-2">
               <span class="annot-label">改动范围</span><br>
-              上述改动与<strong class="annot-key">「查看下级月分润」</strong>同时生效：两页的发布状态筛选、发布状态列与合计口径保持一致。（原「额外收取标注」一项本期不做，两页均不加注）
+              上述改动与<strong class="annot-key">「查看下级月分润」</strong>同时生效：两页的发布状态筛选、发布状态列与合计口径保持一致。（「额外收取标注」一项不做，两页均不加注）
             </div>
           </div>
         </div>
@@ -602,9 +599,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr><td>1</td><td>2025-06-30</td><td>D7</td><td class="num">2.00</td><td class="num">1.60</td><td class="num">1.00</td><td class="num">0.40</td><td class="num">1.00</td><td class="num">6.00</td><td class="num">6.18</td><td><!-- 查看按钮已删除 --></td></tr>
-                <tr><td>2</td><td>2025-06-29</td><td>D1</td><td class="num">1.20</td><td class="num">1.10</td><td class="num">0.80</td><td class="num">0.30</td><td class="num">0.90</td><td class="num">4.30</td><td class="num">4.22</td><td><!-- 查看按钮已删除：如需查看可去申请记录 --></td></tr>
-                <tr><td>3</td><td>2025-06-28</td><td>D0</td><td class="num">0.70</td><td class="num">0.66</td><td class="num">0.50</td><td class="num">0.20</td><td class="num">0.50</td><td class="num">2.56</td><td class="num">2.56</td><td><!-- 查看按钮已删除：如需查看可去申请记录 --></td></tr>
+                <tr><td>1</td><td>2025-06-30</td><td>D7</td><td class="num">2.00</td><td class="num">1.60</td><td class="num">1.00</td><td class="num">0.40</td><td class="num">1.00</td><td class="num">6.00</td><td class="num">6.18</td><td></td></tr>
+                <tr><td>2</td><td>2025-06-29</td><td>D1</td><td class="num">1.20</td><td class="num">1.10</td><td class="num">0.80</td><td class="num">0.30</td><td class="num">0.90</td><td class="num">4.30</td><td class="num">4.22</td><td></td></tr>
+                <tr><td>3</td><td>2025-06-28</td><td>D0</td><td class="num">0.70</td><td class="num">0.66</td><td class="num">0.50</td><td class="num">0.20</td><td class="num">0.50</td><td class="num">2.56</td><td class="num">2.56</td><td></td></tr>
               </tbody>
             </table>
           </div>
@@ -615,9 +612,9 @@
               <strong class="annot-key">分润合计</strong>位于图示位置，与月分润列表口径统一。
             </div>
             <div class="annot annot-highlight" data-annot-id="d-2">
-              <span class="annot-label">实发金额保留（本轮修正）</span><br>
+              <span class="annot-label">实发金额保留</span><br>
               <strong class="annot-key">「实发金额」保留展示，不再隐藏</strong>：<strong class="annot-key">分润合计为系统计算值、不含调整项</strong>；<strong class="annot-key">实发金额 = 分润合计 + 通用调整项</strong>，两者存在差异故需同时保留并列展示，不能用其一替代另一。<br>
-              本页仅隐藏<strong class="annot-key">「开票金额」「扣除税点」</strong>两列（原「实发金额、开票金额、扣除税点三列隐藏」作废）。<br>
+              本页仅隐藏<strong class="annot-key">「开票金额」「扣除税点」</strong>两列。<br>
               <span style="color:#86909c">示例值示意：2025-06-30 行 分润合计 6.00 / 实发金额 6.18（含通用调整项）；2025-06-29 行 4.30 / 4.22；2025-06-28 行 2.56 / 2.56（无通用调整项时两者相同）。</span>
             </div>
             <div class="annot" data-annot-id="d-3">
@@ -848,10 +845,10 @@
             <label class="lb">（演示开关）可申请的历史分润金额</label>
             <div class="field">
               <input class="input sm" type="text" id="history-remain-input" value="10000" style="width:130px" />
-              <span class="tip-text">元（评审演示用，可改数值；支持小数，留空或填 0 均按 0 处理）</span>
+              <span class="tip-text">元（演示参数，可改数值；支持小数，留空或填 0 均按 0 处理）</span>
             </div>
             <span class="tip-text" id="history-remain-status" style="color:#1677ff;font-weight:600"></span>
-            <span class="tip-text">（演示用输入项，不是真实配置项。规则：可申请金额 &gt; 0 时，才展示【查看月分润】的提示文案「您有 X 元可按金额申请的历史分润金额。」与「申请历史分润」入口；可申请金额 = 0 时，文案与入口一并隐藏。前置条件：上方「允许下级申请分润」为「关」时，可申请金额按 0 处理，填任何金额都不会展示）</span>
+            <span class="tip-text">（演示参数，非产品配置项。规则：可申请金额 &gt; 0 时，才展示【查看月分润】的提示文案「您有 X 元可按金额申请的历史分润金额。」与「申请历史分润」入口；可申请金额 = 0 时，文案与入口一并隐藏。前置条件：上方「允许下级申请分润」为「关」时，可申请金额按 0 处理，填任何金额都不会展示）</span>
           </div>
 
           <div class="btn-area" style="margin-top:20px;justify-content:flex-end">
@@ -907,7 +904,7 @@
           <div class="annot-layer">
             <div class="annot" data-annot-id="h-1">
               <span class="annot-label">申请历史分润</span><br>
-              上线前<strong class="annot-key">已发布但未申请</strong>的历史金额仍按金额申请：本入口<strong class="annot-key">跳转至原「申请分润」页面</strong>（即上线前的按金额申请页）。该页不在本期改造范围内，原型仅以占位页标示跳转目标。
+              上线前<strong class="annot-key">已发布但未申请</strong>的历史金额仍按金额申请：本入口<strong class="annot-key">跳转至原「申请分润」页面</strong>（即上线前的按金额申请页）。该页不在本方案改造范围内，原型仅以占位页标示跳转目标。
             </div>
             <div class="annot annot-highlight" data-annot-id="h-2">
               <span class="annot-label">升级提示文案</span><br>
@@ -1283,6 +1280,6 @@
   </div>
 </div>
 
-<script src="js/app.js?v=20260924a"></script><script src="js/annot-drag.js?v=20260924a"></script>
+<script src="js/app.js?v=20260924b"></script><script src="js/annot-drag.js?v=20260924b"></script>
 </body>
 </html>
