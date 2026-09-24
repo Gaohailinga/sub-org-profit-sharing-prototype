@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>分润系统 · 下级分润方案原型</title>
-<link rel="stylesheet" href="css/style-original.css?v=20260923e" />
+<link rel="stylesheet" href="css/style-original.css?v=20260924a" />
 </head>
 <body>
 
@@ -84,7 +84,7 @@
         <div class="notice">
           每月前 7 个工作日内发布分润数据，明细数据以每月分润发布后查询结果为准，如对分润数据有疑问请发送邮件至 xx@xx.com 核查。
         </div>
-        <div id="month-history-apply-entry" class="notice warn notice-history" style="display:none">
+        <div id="month-history-apply-entry" class="notice notice-history" style="display:none;background:#f0f5ff;border-color:#adc6ff;color:#1d39c4">
           <span class="notice-history-text">您有 <b class="notice-history-amount" id="month-history-apply-amount">10,000.00</b> 元可按金额申请的历史分润金额。</span>
           <button class="btn btn-xs" id="month-history-apply-btn" data-page-jump="page-history-apply-original">申请历史分润 ›</button>
         </div>
@@ -123,6 +123,7 @@
               <button class="btn btn-primary" data-toast="查询成功">查询</button>
               <button class="btn" data-toast="已重置">重置</button>
               <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
+              <!-- 分润确认按钮已删除：非一级机构不展示确认功能 -->
               <button class="btn" data-page-jump="page-history">申请记录</button>
             </div>
           </div>
@@ -641,7 +642,7 @@
                 <label><input type="radio" name="allowApply" value="on" checked data-toggle-apply /> 开</label>
                 <label><input type="radio" name="allowApply" value="off" data-toggle-apply /> 关</label>
               </div>
-              <span class="tip-text">（本次新增，系统默认开，原型默认同取「开」。当前演示状态为「开」：下级可见「申请分润」入口并可申请，历史分润提示文案与「申请历史分润」入口随可申请金额一并展示；切到「关」可预览下级「完全看不到申请入口」的状态，此时历史分润提示文案与入口同样隐藏）</span>
+              <span class="tip-text">（系统默认开，原型默认同取「开」。当前演示状态为「开」：下级可见「申请分润」入口并可申请，历史分润提示文案与「申请历史分润」入口随可申请金额一并展示；切到「关」可预览下级「完全看不到申请入口」的状态，此时历史分润提示文案与入口同样隐藏）</span>
             </div>
             <div class="form-row" id="block-view-extra">
               <label class="lb">是否允许查看额外收取分润</label>
@@ -695,10 +696,10 @@
             <label class="lb">（演示开关）可申请的历史分润金额</label>
             <div class="field">
               <input class="input sm" type="text" id="history-remain-input" value="10000" style="width:130px" />
-              <span class="tip-text">元（演示用，可改数值；支持小数，留空或填 0 均按 0 处理）</span>
+              <span class="tip-text">元（评审演示用，可改数值；支持小数，留空或填 0 均按 0 处理）</span>
             </div>
             <span class="tip-text" id="history-remain-status" style="color:#1677ff;font-weight:600"></span>
-            <span class="tip-text">（仅用于演示本规则，不是真实配置项、也不写入 PRD。规则：可申请金额 &gt; 0 时，才展示【查看月分润】的提示文案「您有 X 元可按金额申请的历史分润金额。」与「申请历史分润」入口；可申请金额 = 0 时，文案与入口一并隐藏。前置条件：上方「允许下级申请分润」为「关」时，可申请金额按 0 处理，填任何金额都不会展示）</span>
+            <span class="tip-text">（演示用输入项，不是真实配置项。规则：可申请金额 &gt; 0 时，才展示【查看月分润】的提示文案「您有 X 元可按金额申请的历史分润金额。」与「申请历史分润」入口；可申请金额 = 0 时，文案与入口一并隐藏。前置条件：上方「允许下级申请分润」为「关」时，可申请金额按 0 处理，填任何金额都不会展示）</span>
           </div>
 
           <div class="btn-area" style="margin-top:20px;justify-content:flex-end">
@@ -809,13 +810,13 @@
 
           <div class="guide-card">
             <div class="guide-card-head">
-              <span class="guide-card-scope">一级机构 / 下级机构 · 查看下级月分润</span>
+              <span class="guide-card-scope">上级机构 · 查看下级月分润</span>
               <span class="guide-card-form">弹窗提示</span>
             </div>
             <div class="guide-demo">
               <div class="guide-demo-head"><span>下级机构分润审核功能升级</span><span class="guide-demo-x">×</span></div>
               <div class="guide-demo-body">
-                在【查看下级月分润页面】可直接看到下级机构每个月的分润申请情况，对下级机构的分润申请进行审核/批量审核；审核过的数据点击“查看”可以查看申请、审核详情。
+                在【查看月分润页面】可查看下级机构月分润，可查看下级分润申请并进行审核/批量审核；审核过的数据点击“查看”可以查看申请、审核详情。
               </div>
               <div class="guide-figure"><img src="images/guide-submonth-apply-audit.png" alt="新功能提示指引图" /></div>
               <div class="guide-demo-foot">
@@ -834,8 +835,8 @@
               <div class="guide-demo-head"><span>下级机构分润申请、审核功能升级</span><span class="guide-demo-x">×</span></div>
               <div class="guide-demo-body">
                 1、支持下级机构按月申请分润，在【查看月分润页面】点击申请/批量申请分润<br />
-                2、进入分润申请页面，选择要申请的分润，填写申请金额（选填），提交申请<br />
-                3、在【查看月分润页面】可查看申请、审核结果
+                2、进入分润申请页面，选择要申请的分润，提交申请<br />
+                3、在【查看月分润页面】可查看分润申请、审核申请
               </div>
               <div class="guide-demo-foot">
                 <button class="btn" data-toast="已设置，后续进入分润模块不再提示">不再提示</button>
@@ -1011,7 +1012,7 @@
   </div>
 </div>
 
-<!-- ===== 下级数据调整弹窗（是否本期实现待确认） ===== -->
+<!-- ===== 下级数据调整弹窗 ===== -->
 <div class="mask" id="modal-adjust">
   <div class="modal narrow">
     <div class="modal-head"><span>下级分润调整</span><button class="modal-close" data-close>×</button></div>
@@ -1026,7 +1027,7 @@
       </div>
       <div class="err-text hide" id="file-err">上传失败！仅支持上传 xls、xlsx 格式的文件</div>
       <div class="tip-text" style="margin-top:12px;line-height:1.9">
-        模板列：分润月份（YYYY-MM）、下级机构编号（仅直属下级）、调整金额（数字 / 小数点 / 负号，支持 2 位小数，正加负减）。<br />
+        模板列：分润月份（YYYY-MM）、下级机构编号（仅直属下级）、<strong>调整原因</strong>、调整金额（数字 / 小数点 / 负号，支持 2 位小数，正加负减）。<br />
         点击确定后异步解析校验，结果请前往执行结果页查看。
       </div>
     </div>
@@ -1062,6 +1063,6 @@
   </div>
 </div>
 
-<script src="js/app-original.js?v=20260923f"></script>
+<script src="js/app-original.js?v=20260924a"></script>
 </body>
 </html>
