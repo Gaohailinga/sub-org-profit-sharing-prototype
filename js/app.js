@@ -343,15 +343,15 @@
   var DRAWER_MASK = $('#month-extra-drawer-mask');
   var DRAWER_TITLE = $('#month-extra-drawer-title');
   var DRAWER_BODY = $('#month-extra-drawer-body');
-  /* .btn-toggle-detail = 查看月分润（上级机构看自己）→ 受「是否允许下级机构查看额外收取下级分润数据」开关控制
-     .btn-extra-detail  = 查看下级月分润（上级看下级）→ 不受该开关控制，恒可查看 */
-  $$('.btn-toggle-detail, .btn-extra-detail').forEach(function (btn) {
+  /* .btn-toggle-detail = 查看月分润（下级机构）→ 受「是否允许下级机构查看额外收取下级分润数据」开关控制
+     注：查看下级月分润（上级机构）页不提供额外收取明细入口，故无 .btn-extra-detail */
+  $$('.btn-toggle-detail').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var targetId = btn.getAttribute('data-detail-target');
       var source = $('#' + targetId);
       var row = btn.closest('tr');
       var month = btn.getAttribute('data-detail-month') || (row ? row.cells[1].textContent : '');
-      if (DRAWER_TITLE) { DRAWER_TITLE.textContent = (month ? month + ' ' : '') + '额外收取分润'; }
+      if (DRAWER_TITLE) { DRAWER_TITLE.textContent = (month ? month + ' ' : '') + '我的额外被收取分润'; }
       if (DRAWER_BODY) {
         DRAWER_BODY.innerHTML = '';
         if (source) {
@@ -402,7 +402,8 @@
      演示取值由「下级机构管理」配置页的「（演示开关）可申请的历史分润金额」控制。 */
   var HISTORY_APPLY_ENTRY = $('#history-apply-entry');               /* 机构分润跳转提示页 · 入口 */
   var HISTORY_APPLY_TIP = $('#history-apply-tip');                   /* 机构分润跳转提示页 · 入口说明 */
-  var MONTH_HISTORY_APPLY_ENTRY = $('#month-history-apply-entry');   /* 查看月分润 · 提示条（文案 + 入口） */
+  var MONTH_HISTORY_APPLY_ENTRY = $('#month-history-apply-entry');   /* 查看月分润 · 提示条（文案 + 按钮） */
+  var MONTH_HISTORY_APPLY_BTN = $('#month-history-apply-btn');       /* 查看月分润 · 提示条内「申请历史分润」按钮 */
   var MONTH_HISTORY_APPLY_AMOUNT = $('#month-history-apply-amount'); /* 查看月分润 · 提示条内的金额 */
   var historyRemain = 10000; /* 演示初始值（> 0） */
   var HISTORY_REMAIN_INPUT = $('#history-remain-input');     /* 配置页 · 可自由编辑的演示金额输入框 */
@@ -410,29 +411,33 @@
   function fmtAmount(v) {
     return v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
   }
-  /* 生效的可申请金额：申请开关为「开」时取输入框金额；为「关」时一律按 0 处理 */
-  function effectiveHistoryRemain() { return applyOn ? historyRemain : 0; }
+  /* 生效的可申请金额：申请开关为「开」时取输入框金额；为「关」时文案仍展示但按钮隐藏 */
+  function effectiveHistoryRemain() { return historyRemain; }
   function renderHistoryApplyEntry() {
     var remain = effectiveHistoryRemain();
-    var canApply = remain > 0; /* 唯一判定条件：生效的可申请金额是否大于 0 */
-    /* 查看月分润：提示文案与「申请历史分润」入口同处一个容器，一并显隐 */
+    var canShow = remain > 0; /* 文案展示条件：金额 > 0 */
+    var canApply = applyOn && canShow; /* 按钮展示条件：开关开 且 金额 > 0 */
+    /* 查看月分润：提示文案始终展示（金额 > 0 时），按钮仅在开关开时展示 */
     if (MONTH_HISTORY_APPLY_ENTRY) {
-      MONTH_HISTORY_APPLY_ENTRY.style.display = canApply ? 'flex' : 'none';
+      MONTH_HISTORY_APPLY_ENTRY.style.display = canShow ? 'flex' : 'none';
+    }
+    if (MONTH_HISTORY_APPLY_BTN) {
+      MONTH_HISTORY_APPLY_BTN.style.display = canApply ? 'inline-block' : 'none';
     }
     if (MONTH_HISTORY_APPLY_AMOUNT) { MONTH_HISTORY_APPLY_AMOUNT.textContent = fmtAmount(remain); }
     /* 机构分润跳转提示页：入口按钮与其说明文案一并显隐 */
     if (HISTORY_APPLY_ENTRY) { HISTORY_APPLY_ENTRY.classList.toggle('hide', !canApply); }
     if (HISTORY_APPLY_TIP) { HISTORY_APPLY_TIP.classList.toggle('hide', !canApply); }
-    /* 配置页回显当前结论，避免「填了金额却看不到」时被当成故障 */
+    /* 配置页回显当前结论 */
     if (HISTORY_REMAIN_STATUS) {
       if (!applyOn) {
-        HISTORY_REMAIN_STATUS.textContent = '当前生效金额：0.00 元 ← 被上方「允许下级申请分润」= 关 拦截，按 0 处理；改为「开」即按填入金额展示';
+        HISTORY_REMAIN_STATUS.textContent = '当前生效金额：' + fmtAmount(remain) + ' 元 → 开关关闭时仅展示文案，按钮隐藏';
         HISTORY_REMAIN_STATUS.style.color = '#fa8c16';
       } else {
-        HISTORY_REMAIN_STATUS.textContent = canApply
-          ? '当前生效金额：' + fmtAmount(remain) + ' 元 → 提示文案与入口展示'
-          : '当前生效金额：0.00 元 → 提示文案与入口隐藏';
-        HISTORY_REMAIN_STATUS.style.color = canApply ? '#1677ff' : '#86909c';
+        HISTORY_REMAIN_STATUS.textContent = canShow
+          ? '当前生效金额：' + fmtAmount(remain) + ' 元 → 文案与按钮均展示'
+          : '当前生效金额：0.00 元 → 文案与入口均隐藏';
+        HISTORY_REMAIN_STATUS.style.color = canShow ? '#1677ff' : '#86909c';
       }
     }
   }
@@ -506,8 +511,8 @@
     title: '下级机构分润申请、审核功能升级',
     lines: [
       '1、支持下级机构按月申请分润，在【查看月分润页面】点击申请/批量申请分润',
-      '2、进入分润申请页面，选择要申请的分润，填写申请金额（选填），提交申请',
-      '3、在【查看月分润页面】可查看申请、审核结果'
+      '2、进入分润申请页面，选择要申请的分润，提交申请',
+      '3、在【查看月分润页面】可查看分润申请、审核申请'
     ]
   };
   var CURRENT_ORG_LEVEL = 'nonLevel1';

@@ -337,15 +337,15 @@
   var DRAWER_MASK = $('#month-extra-drawer-mask');
   var DRAWER_TITLE = $('#month-extra-drawer-title');
   var DRAWER_BODY = $('#month-extra-drawer-body');
-  /* .btn-toggle-detail = 查看月分润（上级机构看自己）→ 受「是否允许下级机构查看额外收取下级分润数据」开关控制
-     .btn-extra-detail  = 查看下级月分润（上级看下级）→ 不受该开关控制，恒可查看 */
-  $$('.btn-toggle-detail, .btn-extra-detail').forEach(function (btn) {
+  /* .btn-toggle-detail = 查看月分润（下级机构）→ 受「是否允许下级机构查看额外收取下级分润数据」开关控制
+     注：查看下级月分润（上级机构）页不提供额外收取明细入口，故无 .btn-extra-detail */
+  $$('.btn-toggle-detail').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var targetId = btn.getAttribute('data-detail-target');
       var source = $('#' + targetId);
       var row = btn.closest('tr');
       var month = btn.getAttribute('data-detail-month') || (row ? row.cells[1].textContent : '');
-      if (DRAWER_TITLE) { DRAWER_TITLE.textContent = (month ? month + ' ' : '') + '额外收取分润'; }
+      if (DRAWER_TITLE) { DRAWER_TITLE.textContent = (month ? month + ' ' : '') + '我的额外被收取分润'; }
       if (DRAWER_BODY) {
         DRAWER_BODY.innerHTML = '';
         if (source) {
