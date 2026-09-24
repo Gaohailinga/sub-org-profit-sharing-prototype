@@ -15,7 +15,8 @@
     'page-lower-daily-detail': '查看下级日分润明细',
     'page-org-config': '下级机构管理',
     'page-migrate': '下级申请管理',
-    'page-history': '历史申请记录',
+    'page-history': '申请记录',
+    'page-sub-history': '下级申请记录',
     'page-guide-spec': '新功能提示（3 类文案）',
     'page-history-apply-original': '原申请分润页面'
   };

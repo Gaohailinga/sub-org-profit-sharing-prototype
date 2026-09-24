@@ -295,7 +295,7 @@
               <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
               <button class="btn" data-modal="modal-adjust">下级数据调整</button>
               <button class="btn btn-primary" id="btn-batch-audit">批量审核</button>
-              <button class="btn" data-page-jump="page-history">下级申请记录</button>
+              <button class="btn" data-page-jump="page-sub-history">下级申请记录</button>
             </div>
           </div>
 
@@ -955,7 +955,7 @@
         </div>
       </section>
 
-      <!-- ========== 历史申请记录 ========== -->
+      <!-- ========== 申请记录（本机构）========== -->
       <section class="page" id="page-history">
         <div class="panel">
           <div class="filters">
@@ -977,12 +977,12 @@
           <div class="table-scroll">
             <table class="grid">
               <thead>
-                <tr><th>序号</th><th>申请时间</th><th>审核时间</th><th>申请方式</th><th class="num">申请分润</th><th class="num">实发分润</th><th>审核状态</th><th>操作</th></tr>
+                <tr><th>序号</th><th>申请时间</th><th>审核时间</th><th>申请方式</th><th class="num">申请分润</th><th class="num">实发分润</th><th>审核状态</th></tr>
               </thead>
               <tbody>
-                <tr><td>1</td><td>2024-04-18 10:12:30</td><td>2024-04-20 09:30:11</td><td>按月申请</td><td class="num">3.00</td><td class="num">2.82</td><td><span class="tag tag-green">审核通过</span></td><td><!-- 查看按钮已删除 --></td></tr>
-                <tr><td>2</td><td>2024-03-18 15:02:44</td><td>2024-03-20 11:20:05</td><td>按月申请</td><td class="num">2.00</td><td class="num">1.88</td><td><span class="tag tag-green">审核通过</span></td><td><!-- 查看按钮已删除 --></td></tr>
-                <tr><td>3</td><td>2024-02-19 09:41:12</td><td>--</td><td>按金额申请</td><td class="num">1.00</td><td class="num">--</td><td><span class="tag tag-red">审核驳回</span></td><td><!-- 查看按钮已删除 --></td></tr>
+                <tr><td>1</td><td>2024-04-18 10:12:30</td><td>2024-04-20 09:30:11</td><td>按月申请</td><td class="num">3.00</td><td class="num">2.82</td><td><span class="tag tag-green">审核通过</span></td></tr>
+                <tr><td>2</td><td>2024-03-18 15:02:44</td><td>2024-03-20 11:20:05</td><td>按月申请</td><td class="num">2.00</td><td class="num">1.88</td><td><span class="tag tag-green">审核通过</span></td></tr>
+                <tr><td>3</td><td>2024-02-19 09:41:12</td><td>--</td><td>按金额申请</td><td class="num">1.00</td><td class="num">--</td><td><span class="tag tag-red">审核驳回</span></td></tr>
               </tbody>
             </table>
           </div>
@@ -990,7 +990,7 @@
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="his-1">
               <span class="annot-label">保留页面与入口</span><br>
-              本页<strong class="annot-key">保留</strong>：用于查看历史申请流水；入口在「查看月分润」页的「申请记录」与「查看下级月分润」页的「下级申请记录」按钮。
+              本页<strong class="annot-key">保留</strong>：用于查看本机构历史申请流水；入口在「查看月分润」页的「申请记录」按钮。
             </div>
             <div class="annot annot-dim" data-annot-id="his-2">
               <span class="annot-label">待确认</span><br>
@@ -999,6 +999,55 @@
             <div class="annot annot-dim" data-annot-id="his-3">
               <span class="annot-label">历史数据口径</span><br>
               「查看月分润」历史月份行的申请 / 审核状态展示<strong class="annot-key">「-」</strong>；待申请额度申请完毕后入口自动关闭。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 下级申请记录（下级机构）========== -->
+      <section class="page" id="page-sub-history">
+        <div class="panel">
+          <div class="filters">
+            <div class="field">
+              <label>申请日期</label>
+              <input class="input md" type="text" value="2022-02-01" readonly />
+              <span>~</span>
+              <input class="input md" type="text" value="2024-04-23" readonly />
+            </div>
+            <div class="field">
+              <label>下级机构</label>
+              <select class="select md"><option>全部</option><option>D0</option><option>D1</option><option>D7</option></select>
+            </div>
+            <div class="field">
+              <label>审核状态</label>
+              <select class="select md"><option>全部</option><option>待审核</option><option>审核通过</option><option>审核驳回</option></select>
+            </div>
+            <div class="btn-area">
+              <button class="btn btn-primary" data-toast="查询成功">查询</button>
+              <button class="btn" data-toast="已重置">重置</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="grid">
+              <thead>
+                <tr><th>序号</th><th>申请时间</th><th>审核时间</th><th>下级机构</th><th>申请方式</th><th class="num">申请分润</th><th class="num">实发分润</th><th>审核状态</th><th>操作</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>1</td><td>2024-04-18 10:12:30</td><td>2024-04-20 09:30:11</td><td>D7</td><td>按月申请</td><td class="num">3.00</td><td class="num">2.82</td><td><span class="tag tag-green">审核通过</span></td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+                <tr><td>2</td><td>2024-03-18 15:02:44</td><td>2024-03-20 11:20:05</td><td>D1</td><td>按月申请</td><td class="num">2.00</td><td class="num">1.88</td><td><span class="tag tag-green">审核通过</span></td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+                <tr><td>3</td><td>2024-02-19 09:41:12</td><td>--</td><td>D0</td><td>按金额申请</td><td class="num">1.00</td><td class="num">--</td><td><span class="tag tag-red">审核驳回</span></td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="annot-layer">
+            <div class="annot annot-highlight" data-annot-id="sub-his-1">
+              <span class="annot-label">保留页面与入口</span><br>
+              本页<strong class="annot-key">保留</strong>：用于查看下级机构历史申请流水；入口在「查看下级月分润」页的「下级申请记录」按钮。
+            </div>
+            <div class="annot annot-dim" data-annot-id="sub-his-2">
+              <span class="annot-label">待确认</span><br>
+              本页保留用于查看下级机构历史申请流水；展示本机构所有下级机构的申请记录。
             </div>
           </div>
         </div>
