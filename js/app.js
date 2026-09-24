@@ -493,15 +493,15 @@
   }
 
   /* ---------- 新功能提示：按机构层级区分弹窗（评审意见1）----------
-     一级机构 → 仅告知审核入口变更；非一级机构 → 告知申请+审核入口变更 */
-  var GUIDE_AUDIT_LEVEL1 = {
+     上级机构（查看下级月分润）→ 告知审核入口；下级机构（查看月分润）→ 告知申请+审核入口 */
+  var GUIDE_AUDIT = {
     title: '下级机构分润审核功能升级',
     img: 'images/guide-submonth-apply-audit.png',
     lines: [
-      '在【查看下级月分润页面】可直接看到下级机构每个月的分润申请情况，对下级机构的分润申请进行审核/批量审核。'
+      '在【查看月分润页面】可查看下级机构月分润，可查看下级分润申请并进行审核/批量审核；审核过的数据点击"查看"可以查看申请、审核详情。'
     ]
   };
-  var GUIDE_APPLY_NON_LEVEL1 = {
+  var GUIDE_APPLY = {
     title: '下级机构分润申请、审核功能升级',
     lines: [
       '1、支持下级机构按月申请分润，在【查看月分润页面】点击申请/批量申请分润',
@@ -511,10 +511,10 @@
   };
   var CURRENT_ORG_LEVEL = 'nonLevel1';
   var GUIDE_BY_PAGE = {
-    'page-month': GUIDE_APPLY_NON_LEVEL1,
-    'page-month-detail': GUIDE_APPLY_NON_LEVEL1,
-    'page-lower-month': GUIDE_APPLY_NON_LEVEL1,
-    'page-lower-month-detail': GUIDE_APPLY_NON_LEVEL1
+    'page-month': GUIDE_APPLY,
+    'page-month-detail': GUIDE_APPLY,
+    'page-lower-month': GUIDE_AUDIT,
+    'page-lower-month-detail': GUIDE_AUDIT
   };
 
   var guide = $('#modal-guide');
