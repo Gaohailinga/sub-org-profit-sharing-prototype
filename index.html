@@ -122,6 +122,7 @@
             <div class="btn-area">
               <button class="btn btn-primary" data-toast="查询成功">查询</button>
               <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn btn-primary" data-modal="modal-apply" data-allow-apply>申请分润</button>
               <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
               <button class="btn" data-page-jump="page-history">申请记录</button>
             </div>
@@ -140,7 +141,6 @@
           <div style="background:#fff7e6;border:1px solid #ffd591;color:#874d00;font-size:13px;line-height:21px;padding:12px;border-radius:4px;margin:12px 0">
             <strong>额外收取下级分润数据展示</strong>：点击每月「查看额外收取分润」按钮，从右侧滑出抽屉展示。当前机构配置为 <span id="month-extra-status" class="tag tag-orange">不允许（默认）</span>，抽屉中仅展示额外收取后的实际到手金额；若配置为允许，则同屏展示额外收取前金额、额外收取金额、我的应分额三列。配置入口：顶部导航「账号管理」→ 左侧「下级机构管理」→ 编辑。
           </div>
-
           <div style="display:none">
             <div id="detail-1"><table class="grid"><thead><tr><th>分润细项</th><th class="num month-extra-col-before hide">额外收取前金额</th><th class="num month-extra-col-amount hide">额外收取金额（上级抽取）</th><th class="num">我的应分额（额外收取后）</th></tr></thead><tbody>
 <tr><td>扫码交易</td><td class="num month-extra-col-before hide">3,645.00</td><td class="num month-extra-col-amount hide">364.50</td><td class="num">3,280.50</td></tr>
@@ -186,25 +186,24 @@
                 <tr>
                   <td>1</td><td>2024-03</td><td>--</td><td><span class="tag tag-green">已发布</span></td>
                   <td class="num">--</td><td><span class="tag tag-orange">待申请</span></td>
-                  <td class="num">0.30</td><td class="num">0.40</td><td class="num">0.20</td><td class="num">0.20</td>
-                  <td class="num">0.86</td><td class="num">1.96</td>
-                  <td><button class="btn-link" data-modal="modal-apply" data-allow-apply>申请分润</button><button class="btn-link btn-toggle-detail" data-detail-target="detail-1">查看额外收取分润</button><span data-deny-apply style="color:#86909c">--</span></td>
+                  <td class="num">0.27</td><td class="num">0.36</td><td class="num">0.18</td><td class="num">0.18</td>
+                  <td class="num">0.77</td><td class="num">1.76</td>
+                  <td><button class="btn-link btn-toggle-detail" data-detail-target="detail-1">查看额外收取分润</button></td>
                 </tr>
                 <tr>
                   <td>2</td><td>2024-02</td><td>2024-03-05 15:10:23</td><td><span class="tag tag-green">已发布</span></td>
                   <td class="num">--</td><td><span class="tag tag-red">待修改</span></td>
-                  <td class="num">0.28</td><td class="num">0.36</td><td class="num">0.18</td><td class="num">0.18</td>
-                  <td class="num">0.80</td><td class="num">1.80</td>
+                  <td class="num">0.25</td><td class="num">0.32</td><td class="num">0.16</td><td class="num">0.16</td>
+                  <td class="num">0.73</td><td class="num">1.62</td>
                   <td>
-                    <button class="btn-link" data-modal="modal-apply" data-allow-apply>申请分润</button>
                     <button class="btn-link btn-toggle-detail" data-detail-target="detail-2">查看额外收取分润</button>
                   </td>
                 </tr>
                 <tr>
                   <td>3</td><td>2024-01</td><td>2024-02-06 10:02:11</td><td><span class="tag tag-green">已发布</span></td>
-                  <td class="num">1.66</td><td><span class="tag tag-green">已完成</span></td>
-                  <td class="num">0.26</td><td class="num">0.34</td><td class="num">0.16</td><td class="num">0.16</td>
-                  <td class="num">0.74</td><td class="num">1.66</td>
+                  <td class="num">1.40</td><td><span class="tag tag-green">已完成</span></td>
+                  <td class="num">0.23</td><td class="num">0.31</td><td class="num">0.14</td><td class="num">0.14</td>
+                  <td class="num">0.67</td><td class="num">1.49</td>
                   <td><button class="btn-link btn-toggle-detail" data-detail-target="detail-3">查看额外收取分润</button></td>
                 </tr>
               </tbody>
@@ -216,17 +215,17 @@
               <span class="annot-label">分润合计列位置</span><br>
               <strong class="annot-key">分润合计</strong>位于「增值产品分润」之后；列表字段与明细页口径保持一致。
             </div>
-            <div class="annot" data-annot-id="m-2">
-              <span class="annot-label">申请入口唯一</span><br>
-              操作列按钮为<strong class="annot-key">申请分润</strong>，仅「待申请 / 待修改」状态可点；筛选区不设「申请分润」按钮，申请统一从列表操作列进入，同一入口不重复出现。
+            <div class="annot annot-highlight" data-annot-id="m-2">
+              <span class="annot-label">申请入口移至筛选区与【查询】并排</span><br>
+              <strong class="annot-key">【申请分润】不再放在操作列</strong>，移到<strong class="annot-key">筛选区与【查询】【重置】并排</strong>（筛选条件右侧的按钮区）；操作列只保留「查看额外收取分润」。申请入口仍只有这一处，列表内不再重复放该按钮。该按钮仍受「允许下级申请分润」开关控制（开关为「关」时整体隐藏，不再在操作列留「--」占位）。
             </div>
             <div class="annot" data-annot-id="m-3">
               <span class="annot-label">申请金额取值</span><br>
               <strong class="annot-key">申请金额等于分润合计</strong>，不支持手工修改。
             </div>
-            <div class="annot" data-annot-id="m-4">
-              <span class="annot-label">额外收取展示</span><br>
-              分润列展示粒度随「是否允许下级查看额外收取的分润」开关切换：开 → 额外收取前细项 + 额外收取后细项；关 → 仅额外收取后细项。
+            <div class="annot annot-highlight" data-annot-id="m-4">
+              <span class="annot-label">分润列口径＝额外收取之后</span><br>
+              本页五个产品分润列（银行卡分润、二维码分润、提现产品分润、其他结算产品分润、增值产品分润）与<strong class="annot-key">「分润合计」一并展示上级额外收取之后、本级机构实际应得的金额</strong>，五个细项之和等于「分润合计」。<strong class="annot-key">额外收取前的金额不在本列表展示</strong>：仅当「是否允许查看额外收取分润」开关为「允许」时，点行内「查看额外收取分润」在抽屉内查看（抽屉含额外收取前金额、额外收取金额、我的应分额三列）；开关为「不允许」时该入口与三列一并隐藏，只能看到额外收取后的金额。
             </div>
             <div class="annot annot-dim" data-annot-id="m-5">
               <span class="annot-label">本页保持</span><br>
@@ -290,9 +289,9 @@
             <div class="btn-area">
               <button class="btn btn-primary" data-toast="查询成功">查询</button>
               <button class="btn" data-toast="已重置">重置</button>
+              <button class="btn btn-primary" id="btn-audit" data-audit-entry>审核</button>
               <button class="btn" data-toast="导出任务已提交，请前往下载中心查看">导出</button>
               <button class="btn" data-modal="modal-adjust">下级数据调整</button>
-              <button class="btn btn-primary" id="btn-batch-audit">批量审核</button>
               <button class="btn" data-page-jump="page-sub-history">下级申请记录</button>
             </div>
           </div>
@@ -307,7 +306,6 @@
             <table class="grid">
               <thead>
                 <tr>
-                  <th><input type="checkbox" id="lm-check-all" /></th>
                   <th>序号</th><th>分润月份</th><th>下级机构</th><th>下级机构名称</th>
                   <th class="num">分润合计 <span class="help-dot">?</span></th>
                   <th class="num">非直属商户分润收益合计 <span class="help-dot">?</span></th>
@@ -315,45 +313,40 @@
                   <th class="num">应分下级分润合计</th>
                   <th class="num">银行卡分润</th><th class="num">二维码分润</th>
                   <th class="num">提现产品分润</th><th class="num">其他结算产品分润</th><th class="num">增值产品分润</th>
-                  <th>发布状态</th><th>申请状态</th><th>申请时间</th><th class="num">实发金额</th>
+                  <th class="num">调整项</th><th>发布状态</th><th>申请状态</th><th>申请时间</th><th class="num">实发金额</th>
                   <th>审核状态</th><th>审核时间</th><th>操作</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td><input type="checkbox" class="lm-check" data-month="2025-06" data-org="测试代理A" data-due="1.76" data-apply="1.76" data-tax="6" data-real="1.654" /></td>
+              <tbody id="lm-tbody">
+                <tr data-audit="pending" data-month="2025-06" data-org="测试代理A" data-due="1.76" data-apply="1.76" data-tax="6" data-real="1.654">
                   <td>1</td><td>2025-06</td><td>11732862</td><td>测试代理A</td>
                   <td class="num">2.61</td><td class="num">0.12</td>
                   <td class="num">0.85</td><td class="num">1.76</td>
-                  <td class="num">0.40</td><td class="num">0.50</td><td class="num">0.30</td><td class="num">0.30</td><td class="num">1.11</td>
-                  <td><span class="tag tag-green">已自动发布</span></td>
+                  <td class="num">0.27</td><td class="num">0.34</td><td class="num">0.20</td><td class="num">0.20</td><td class="num">0.75</td>
+                  <td class="num">--</td><td><span class="tag tag-green">已自动发布</span></td>
                   <td><span class="tag tag-orange">待审核</span></td><td>2025-07-02 09:12:30</td><td class="num">--</td>
                   <td><span class="tag tag-blue">待审核</span></td><td>--</td>
-                  <td>
-                    <button class="btn-link" data-modal="modal-audit">审核</button>
-                  </td>
+                  <td><span style="color:#86909c">--</span></td>
                 </tr>
-                <tr>
-                  <td><input type="checkbox" class="lm-check" data-month="2025-05" data-org="测试代理B" data-due="6.00" data-apply="6.00" data-tax="6" data-real="5.640" /></td>
+                <tr data-audit="passed" data-month="2025-05" data-org="测试代理B" data-due="6.00" data-apply="6.00" data-tax="6" data-real="5.640">
                   <td>2</td><td>2025-05</td><td>11732863</td><td>测试代理B</td>
                   <td class="num">6.00</td><td class="num">0.00</td>
                   <td class="num">0.60</td><td class="num">5.40</td>
-                  <td class="num">2.00</td><td class="num">1.60</td><td class="num">1.00</td><td class="num">0.40</td><td class="num">1.00</td>
-                  <td><span class="tag tag-green">已手动发布</span></td>
+                  <td class="num">1.80</td><td class="num">1.44</td><td class="num">0.90</td><td class="num">0.36</td><td class="num">0.90</td>
+                  <td class="num">-0.36</td><td><span class="tag tag-green">已手动发布</span></td>
                   <td><span class="tag tag-green">已完成</span></td><td>2025-06-03 14:20:05</td><td class="num">5.64</td>
                   <td><span class="tag tag-green">审核通过</span></td><td>2025-06-05 10:33:18</td>
-                  <td><span style="color:#86909c">--</span></td>
+                  <td><button class="btn-link" data-modal="modal-view-done">查看</button></td>
                 </tr>
-                <tr>
-                  <td><input type="checkbox" class="lm-check" data-month="2025-04" data-org="测试代理C" data-due="2.24" data-apply="2.24" data-tax="3" data-real="2.173" /></td>
+                <tr data-audit="rejected" data-month="2025-04" data-org="测试代理C" data-due="2.24" data-apply="2.24" data-tax="3" data-real="2.173">
                   <td>3</td><td>2025-04</td><td>11732864</td><td>测试代理C</td>
                   <td class="num">3.20</td><td class="num">0.08</td>
                   <td class="num">0.96</td><td class="num">2.24</td>
-                  <td class="num">1.00</td><td class="num">0.90</td><td class="num">0.50</td><td class="num">0.20</td><td class="num">0.60</td>
-                  <td><span class="tag tag-gray">待发布</span></td>
+                  <td class="num">0.70</td><td class="num">0.63</td><td class="num">0.35</td><td class="num">0.14</td><td class="num">0.42</td>
+                  <td class="num">--</td><td><span class="tag tag-gray">待发布</span></td>
                   <td><span class="tag tag-red">待修改</span></td><td>2025-05-06 11:05:44</td><td class="num">--</td>
                   <td><span class="tag tag-red">审核驳回</span></td><td>2025-05-08 16:40:02</td>
-                  <td><span style="color:#86909c">--</span></td>
+                  <td><button class="btn-link" data-modal="modal-view-done">查看</button></td>
                 </tr>
               </tbody>
             </table>
@@ -373,9 +366,15 @@
               「额外收取下级分润合计」列<strong class="annot-key">直接展示原值</strong>（0.85 / 0.60 / 0.96），不加任何后缀标注。<br>
               <strong class="annot-key">「（下级可查看 / 下级不可查看）」加注本期不做</strong>：【查看下级月分润明细】页【额外收取下级分润】列直接展示原值，不加任何后缀标注。
             </div>
-            <div class="annot" data-annot-id="lm-4">
-              <span class="annot-label">批量审核</span><br>
-              需<strong class="annot-key">先勾选数据行</strong>再点「批量审核」，弹窗只展示被勾选的数据。
+            <div class="annot annot-highlight" data-annot-id="lm-4">
+              <span class="annot-label">审核入口移至筛选区与【查询】并排</span><br>
+              原「批量审核」名称改为<strong class="annot-key">【审核】</strong>，<strong class="annot-key">放回筛选区、与【查询】【重置】并排</strong>（不再放操作列，也不再单独占表格上方一行）。点击后打开审核弹窗，<strong class="annot-key">勾选动作全部在弹窗内完成</strong>（表头全选、底部「总计：x 条」、未勾选时【通过】【驳回】置灰），与「申请分润」弹窗同一交互形式：勾选一条即为单条审核，勾选多条即为批量审核。
+              <br>
+              按钮显隐：<strong class="annot-key">本页没有待审核数据时，筛选区【审核】按钮不展示</strong>；审核提交后按剩余待审核数据重新判断显隐。
+              <br>
+              操作列与查看：<strong class="annot-key">审核通过、审核驳回的数据不出现审核入口，操作列只留【查看】</strong>，点【查看】展示该行的申请日期、申请分润、申请备注、审核备注、扣除税点、实发分润；待审核的数据操作列为「--」，统一走筛选区【审核】入口。
+              <br>
+              税点：<strong class="annot-key">审核弹窗内「扣除税点」可编辑</strong>，默认带出机构签约主体配置值，<strong class="annot-key">取值仅支持财务认可的 6% / 3%</strong>；改动后<strong class="annot-key">实发金额 = 申请分润 × (1 − 税点/100) 实时联动</strong>（「已选实发金额合计」同步），白名单外的值红字提示且【通过】置灰。
             </div>
             <div class="annot annot-dim" data-annot-id="lm-5">
               <span class="annot-label">入口范围</span><br>
@@ -390,8 +389,8 @@
               新增<strong class="annot-key">「审核状态」「申请日期（起止）」</strong>两个查询项；审核状态枚举：待审核 / 审核通过 / 审核驳回。
             </div>
             <div class="annot" data-annot-id="lm-8">
-              <span class="annot-label">审核操作与新增列</span><br>
-              新增申请状态、申请时间、审核状态、审核时间、操作列；<strong class="annot-key">操作栏按审核状态</strong>给按钮：待审核【审核】，通过 / 驳回行无操作按钮。
+              <span class="annot-label">审核状态与新增列</span><br>
+              新增申请状态、申请时间、审核状态、审核时间、操作列。<strong class="annot-key">审核入口不再放在操作列</strong>，统一走筛选区的【审核】（与【查询】【重置】并排）；列表同时<strong class="annot-key">取消行内复选框与表头全选框</strong>，勾选动作收敛到审核弹窗内。
             </div>
             <div class="annot" data-annot-id="lm-9">
               <span class="annot-label">下级数据调整</span><br>
@@ -399,7 +398,17 @@
             </div>
             <div class="annot annot-dim" data-annot-id="lm-10">
               <span class="annot-label">不做项</span><br>
-              本页<strong class="annot-key">不提供「查看下级额外收取分润」入口</strong>：操作列仅保留审核相关按钮，不展示额外收取明细抽屉。
+              本页<strong class="annot-key">不提供「查看下级额外收取分润」入口</strong>，不展示额外收取明细抽屉；行内也不再提供行级「查看」入口。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="lm-11">
+              <span class="annot-label">分润列口径＝额外收取之后</span><br>
+              本页五个产品分润列（银行卡分润、二维码分润、提现产品分润、其他结算产品分润、增值产品分润）<strong class="annot-key">展示额外收取下级分润之后、应分给下级机构的金额</strong>，五个细项之和等于<strong class="annot-key">「应分下级分润合计」</strong>；<strong class="annot-key">「分润合计」仍为下级机构额外收取前的分润总额</strong>，两者差值即「额外收取下级分润合计」。即上级在本页既能看到下级机构的总分润，也能看到扣掉自己额外收取后应分给下级的各产品分润构成。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="lm-12">
+              <span class="annot-label">「调整项」列与实发金额</span><br>
+              本页新增<strong class="annot-key">「调整项」列</strong>（位于<strong class="annot-key">「发布状态」之前</strong>，「实发金额」位置不变）：<strong class="annot-key">运营按机构＋月份人工计算后导入，可正可负</strong>。<br>
+              <strong class="annot-key">未导入的行，该列不展示调整项数值</strong>（该格「--」）；<strong class="annot-key">导入后在该列展示具体数值，并把该金额计入「实发金额」</strong>——「实发金额」在原值基础上加上调整项金额（为正则变大、为负则变小）。<br>
+              <span style="color:#86909c">示例：2025-05 行调整项 −0.36，实发金额 = 6.00 ＋ (−0.36) = 5.64。</span>
             </div>
           </div>
         </div>
@@ -528,7 +537,7 @@
                   <th>额外收取下级分润比例(%) <span class="help-dot">?</span></th>
                   <th>额外收取下级分润 <span class="help-dot">?</span></th>
                   <th>应分下级分润 <span class="help-dot">?</span></th>
-                  <th class="num">分润合计</th><th class="num">实发金额</th>
+                  <th class="num">分润合计</th><th class="num">调整项</th><th class="num">实发金额</th>
                 </tr>
               </thead>
               <tbody>
@@ -536,13 +545,19 @@
                   <td>1</td><td>2026-09</td><td>已自动发布</td><td>2026-09-15</td><td>100001</td><td>岳思辰的测试二级代理</td>
                   <td>100000000213</td><td>岳思辰的测试商户</td><td>100000</td><td>岳思辰的测试二级代理</td>
                   <td>0.00</td><td>4</td><td>0.25</td><td>0.00</td><td>太米智慧油站: 0.02</td><td>0.00</td>
-                  <td>-</td><td>线下标准</td><td>微信-借</td><td>0.00</td><td>0</td><td>0.02</td><td>0.00</td><td class="num">0.02</td><td class="num">0.018</td>
+                  <td>-</td><td>线下标准</td><td>微信-借</td><td>0.00</td><td>0</td><td>0.02</td><td>0.00</td><td class="num">0.02</td><td class="num">--</td><td class="num">0.02</td>
                 </tr>
                 <tr>
-                  <td>2</td><td>2026-09</td><td>已手动发布</td><td>2026-09-15</td><td>100002</td><td>岳思辰的测试二级代理</td>
+                  <td>2</td><td>2026-08</td><td>已手动发布</td><td>2026-08-15</td><td>100002</td><td>岳思辰的测试二级代理</td>
                   <td>100000000214</td><td>岳思辰的测试商户2</td><td>100000</td><td>岳思辰的测试二级代理</td>
                   <td>0.02</td><td>2</td><td>0.25</td><td>0.00</td><td>途通交易测试专用应用: 0.02</td><td>0.00</td>
-                  <td>-</td><td>线下标准</td><td>抖音-借</td><td>0.00</td><td>0</td><td>0.02</td><td>0.00</td><td class="num">0.02</td><td class="num">0.018</td>
+                  <td>-</td><td>线下标准</td><td>抖音-借</td><td>0.00</td><td>0</td><td>0.02</td><td>0.00</td><td class="num">0.02</td><td class="num">+0.018</td><td class="num">0.038</td>
+                </tr>
+                <tr>
+                  <td>3</td><td>2026-07</td><td>已自动发布</td><td>2026-07-20</td><td>100003</td><td>岳思辰的测试二级代理</td>
+                  <td>100000000215</td><td>岳思辰的测试商户3</td><td>100000</td><td>岳思辰的测试二级代理</td>
+                  <td>0.05</td><td>3</td><td>0.25</td><td>0.00</td><td>测试专用应用: 0.02</td><td>0.00</td>
+                  <td>-</td><td>线下标准</td><td>微信-借</td><td>0.00</td><td>0</td><td>0.05</td><td>0.00</td><td class="num">0.05</td><td class="num">-0.018</td><td class="num">0.032</td>
                 </tr>
               </tbody>
             </table>
@@ -557,6 +572,13 @@
             <div class="annot annot-dim" data-annot-id="lmd-2">
               <span class="annot-label">改动范围</span><br>
               上述改动与<strong class="annot-key">「查看下级月分润」</strong>同时生效：两页的发布状态筛选、发布状态列与合计口径保持一致。（「额外收取标注」一项不做，两页均不加注）
+            </div>
+            <div class="annot annot-highlight" data-annot-id="lmd-3">
+              <span class="annot-label">「调整项」列与实发金额</span><br>
+              本页新增<strong class="annot-key">「调整项」列</strong>（位于「分润合计」与「实发金额」之间）：<strong class="annot-key">未导入的行该格展示「--」，导入后展示具体数值</strong>（可正可负）。<br>
+              <strong class="annot-key">「实发金额」= 分润合计 + 调整项</strong>，三行示例即三种情形 —— 2026-09 行未导入调整项（两列相同 0.02）、2026-08 行调整项 +0.018（0.02 ＋ 0.018 = 0.038）、2026-07 行调整项 −0.018（0.05 − 0.018 = 0.032）。<br>
+              <strong class="annot-key">本页只查询已发布数据</strong>（未发布 / 发布中 / 发布失败的月份不返回，页面提示已写明「明细数据以每月分润发布后查询结果为准」）。<br>
+              <strong class="annot-key">明细行为逐笔维度（商户＋交易日期＋分润类型＋交易标识），调整项为机构月度维度，两者粒度不同</strong>：行内「调整项」与「实发金额」随行展示（示例按行呈现），机构该月的整体调整项不按行拆分，月度口径以【查看下级月分润】页为准。
             </div>
           </div>
         </div>
@@ -595,13 +617,13 @@
                 <tr>
                   <th>序号</th><th>交易日期</th><th>结算周期</th><th class="num">银行卡分润</th><th class="num">二维码分润</th>
                   <th class="num">提现产品分润</th><th class="num">其他结算产品分润</th><th class="num">增值产品分润</th>
-                  <th class="num">分润合计</th><th class="num">实发金额</th><th>操作</th>
+                  <th class="num">分润合计</th><th class="num">调整项</th><th class="num">实发金额</th><th>操作</th>
                 </tr>
               </thead>
               <tbody>
-                <tr><td>1</td><td>2025-06-30</td><td>D7</td><td class="num">2.00</td><td class="num">1.60</td><td class="num">1.00</td><td class="num">0.40</td><td class="num">1.00</td><td class="num">6.00</td><td class="num">6.18</td><td></td></tr>
-                <tr><td>2</td><td>2025-06-29</td><td>D1</td><td class="num">1.20</td><td class="num">1.10</td><td class="num">0.80</td><td class="num">0.30</td><td class="num">0.90</td><td class="num">4.30</td><td class="num">4.22</td><td></td></tr>
-                <tr><td>3</td><td>2025-06-28</td><td>D0</td><td class="num">0.70</td><td class="num">0.66</td><td class="num">0.50</td><td class="num">0.20</td><td class="num">0.50</td><td class="num">2.56</td><td class="num">2.56</td><td></td></tr>
+                <tr><td>1</td><td>2025-06-30</td><td>D7</td><td class="num">2.00</td><td class="num">1.60</td><td class="num">1.00</td><td class="num">0.40</td><td class="num">1.00</td><td class="num">6.00</td><td class="num">+0.18</td><td class="num">6.18</td><td></td></tr>
+                <tr><td>2</td><td>2025-06-29</td><td>D1</td><td class="num">1.20</td><td class="num">1.10</td><td class="num">0.80</td><td class="num">0.30</td><td class="num">0.90</td><td class="num">4.30</td><td class="num">-0.08</td><td class="num">4.22</td><td></td></tr>
+                <tr><td>3</td><td>2025-06-28</td><td>D0</td><td class="num">0.70</td><td class="num">0.66</td><td class="num">0.50</td><td class="num">0.20</td><td class="num">0.50</td><td class="num">2.56</td><td class="num">--</td><td class="num">2.56</td><td></td></tr>
               </tbody>
             </table>
           </div>
@@ -613,9 +635,10 @@
             </div>
             <div class="annot annot-highlight" data-annot-id="d-2">
               <span class="annot-label">实发金额保留</span><br>
-              <strong class="annot-key">「实发金额」保留展示，不再隐藏</strong>：<strong class="annot-key">分润合计为系统计算值、不含调整项</strong>；<strong class="annot-key">实发金额 = 分润合计 + 通用调整项</strong>，两者存在差异故需同时保留并列展示，不能用其一替代另一。<br>
+              <strong class="annot-key">「实发金额」保留展示，不再隐藏</strong>：<strong class="annot-key">分润合计为系统计算值、不含调整项</strong>；<strong class="annot-key">实发金额 = 分润合计 + 调整项</strong>（调整项由运营按月人工导入，可正可负），两者存在差异故需同时保留并列展示，不能用其一替代另一。<br>
               本页仅隐藏<strong class="annot-key">「开票金额」「扣除税点」</strong>两列。<br>
-              <span style="color:#86909c">示例值示意：2025-06-30 行 分润合计 6.00 / 实发金额 6.18（含通用调整项）；2025-06-29 行 4.30 / 4.22；2025-06-28 行 2.56 / 2.56（无通用调整项时两者相同）。</span>
+              <strong class="annot-key">本页新增「调整项」列</strong>（位于「分润合计」与「实发金额」之间）：运营按机构＋日期人工计算后导入，<strong class="annot-key">未导入的行该格展示「--」，导入后展示具体数值</strong>（可正可负）；<strong class="annot-key">「实发金额」= 分润合计 + 调整项</strong>。<br>
+              <span style="color:#86909c">示例值示意：2025-06-30 行 分润合计 6.00 / 实发金额 6.18（调整项为正）；2025-06-29 行 4.30 / 4.22（调整项为负）；2025-06-28 行 2.56 / 2.56（无调整项时两者相同）。</span>
             </div>
             <div class="annot" data-annot-id="d-3">
               <span class="annot-label">申请入口取消</span><br>
@@ -989,7 +1012,7 @@
             <div class="btn-area">
               <button class="btn btn-primary" data-toast="查询成功">查询</button>
               <button class="btn" data-toast="已重置">重置</button>
-              <button class="btn" data-modal="modal-apply">申请分润</button>
+              <button class="btn btn-primary" data-audit-entry>审核</button>
             </div>
           </div>
           <div class="table-scroll">
@@ -997,18 +1020,25 @@
               <thead>
                 <tr><th>序号</th><th>申请时间</th><th>审核时间</th><th>下级机构</th><th>申请方式</th><th class="num">申请分润</th><th class="num">实发分润</th><th>审核状态</th><th>操作</th></tr>
               </thead>
-              <tbody>
-                <tr><td>1</td><td>2024-04-18 10:12:30</td><td>2024-04-20 09:30:11</td><td>D7</td><td>按月申请</td><td class="num">3.00</td><td class="num">2.82</td><td><span class="tag tag-green">审核通过</span></td><td><button class="btn-link" data-modal="modal-apply">申请分润</button><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
-                <tr><td>2</td><td>2024-03-18 15:02:44</td><td>2024-03-20 11:20:05</td><td>D1</td><td>按月申请</td><td class="num">2.00</td><td class="num">1.88</td><td><span class="tag tag-green">审核通过</span></td><td><button class="btn-link" data-modal="modal-apply">申请分润</button><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
-                <tr><td>3</td><td>2024-02-19 09:41:12</td><td>--</td><td>D0</td><td>按金额申请</td><td class="num">1.00</td><td class="num">--</td><td><span class="tag tag-red">审核驳回</span></td><td><button class="btn-link" data-modal="modal-apply">申请分润</button><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+              <tbody id="sub-his-tbody">
+                <tr data-audit="passed" data-month="2024-04" data-org="D7" data-due="3.00" data-apply="3.00" data-tax="6" data-real="2.82"><td>1</td><td>2024-04-18 10:12:30</td><td>2024-04-20 09:30:11</td><td>D7</td><td>按月申请</td><td class="num">3.00</td><td class="num">2.82</td><td><span class="tag tag-green">审核通过</span></td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+                <tr data-audit="passed" data-month="2024-03" data-org="D1" data-due="2.00" data-apply="2.00" data-tax="6" data-real="1.88"><td>2</td><td>2024-03-18 15:02:44</td><td>2024-03-20 11:20:05</td><td>D1</td><td>按月申请</td><td class="num">2.00</td><td class="num">1.88</td><td><span class="tag tag-green">审核通过</span></td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
+                <tr data-audit="pending" data-month="2024-05" data-org="D1" data-due="1.50" data-apply="1.50" data-tax="6" data-real="1.410"><td>3</td><td>2024-05-18 15:20:08</td><td>--</td><td>D1</td><td>按月申请</td><td class="num">1.50</td><td class="num">--</td><td><span class="tag tag-blue">待审核</span></td><td><span style="color:#86909c">--</span></td></tr>
+                <tr data-audit="rejected" data-month="2024-02" data-org="D0" data-due="1.00" data-apply="1.00" data-tax="6" data-real="0.940"><td>4</td><td>2024-02-19 09:41:12</td><td>--</td><td>D0</td><td>按金额申请</td><td class="num">1.00</td><td class="num">--</td><td><span class="tag tag-red">审核驳回</span></td><td><button class="btn-link" data-modal="modal-view-done">查看</button></td></tr>
               </tbody>
             </table>
           </div>
-          <div class="pager"><span>共 3 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
+          <div class="pager"><span>共 4 条</span><select class="select"><option>10 条/页</option><option>20 条/页</option></select></div>
           <div class="annot-layer">
             <div class="annot annot-highlight" data-annot-id="sub-his-1">
               <span class="annot-label">保留页面与入口</span><br>
               本页<strong class="annot-key">保留</strong>：用于查看下级机构历史申请流水；入口在「查看下级月分润」页的「下级申请记录」按钮。
+            </div>
+            <div class="annot annot-highlight" data-annot-id="sub-his-3">
+              <span class="annot-label">操作列与审核入口</span><br>
+              列表操作列的<strong class="annot-key">【审核】一并移出，统一放到筛选区</strong>（与【查询】【重置】并排，原「批量审核」名称改为【审核】）；操作列仅保留<strong class="annot-key">【查看】</strong>——审核过的数据点【查看】可查看申请、审核详情。点筛选区【审核】进入审核弹窗，<strong class="annot-key">勾选动作在弹窗内完成</strong>。依据原始需求：「查看下级月分润：历史申请的数据在「历史申请记录」页面查看和审核，新申请的数据在当前页面查看和审核」。
+              <br>
+              <strong class="annot-key">审核通过的数据不再展示审核按钮</strong>：操作列只留【查看】；本页没有待审核数据时，筛选区【审核】按钮不展示。
             </div>
             <div class="annot annot-dim" data-annot-id="sub-his-2">
               <span class="annot-label">待确认</span><br>
@@ -1033,7 +1063,7 @@
             <div class="guide-demo">
               <div class="guide-demo-head"><span>下级机构分润审核功能升级</span><span class="guide-demo-x">×</span></div>
               <div class="guide-demo-body">
-                在【查看月分润页面】可查看下级机构月分润，可查看下级分润申请并进行审核/批量审核；审核过的数据点击“查看”可以查看申请、审核详情。
+                在【查看月分润页面】可查看下级机构月分润，可查看下级分润申请并进行审核；审核过的数据点击“查看”可以查看申请、审核详情。
               </div>
               <div class="guide-figure"><img src="images/guide-submonth-apply-audit.png" alt="新功能提示指引图" /></div>
               <div class="guide-demo-foot">
@@ -1110,16 +1140,16 @@
           </thead>
           <tbody>
             <tr>
-              <td><input type="checkbox" class="apply-check" data-profit="1.96" /></td>
+              <td><input type="checkbox" class="apply-check" data-profit="1.76" /></td>
               <td>1</td><td>2024-03</td><td><span class="tag tag-orange">待申请</span></td>
-              <td class="num">0.30</td><td class="num">0.40</td><td class="num">0.20</td><td class="num">0.20</td><td class="num">0.86</td>
-              <td class="num">1.96</td>
+              <td class="num">0.27</td><td class="num">0.36</td><td class="num">0.18</td><td class="num">0.18</td><td class="num">0.77</td>
+              <td class="num">1.76</td>
             </tr>
             <tr>
-              <td><input type="checkbox" class="apply-check" data-profit="1.80" /></td>
+              <td><input type="checkbox" class="apply-check" data-profit="1.62" /></td>
               <td>2</td><td>2024-02</td><td><span class="tag tag-red">待修改</span></td>
-              <td class="num">0.28</td><td class="num">0.36</td><td class="num">0.18</td><td class="num">0.18</td><td class="num">0.80</td>
-              <td class="num">1.80</td>
+              <td class="num">0.25</td><td class="num">0.32</td><td class="num">0.16</td><td class="num">0.16</td><td class="num">0.73</td>
+              <td class="num">1.62</td>
             </tr>
           </tbody>
         </table>
@@ -1152,55 +1182,21 @@
   <div class="modal narrow">
     <div class="modal-head"><span>查看详情</span><button class="modal-close" data-close>×</button></div>
     <div class="modal-body">
-      <div class="detail-row"><span class="dt">申请日期</span><span class="dd">2024-02-06 10:02:11</span></div>
-      <div class="detail-row"><span class="dt">申请分润</span><span class="dd">1.66</span></div>
-      <div class="detail-row"><span class="dt">申请备注</span><span class="dd">--</span></div>
-      <div class="detail-row"><span class="dt">审核备注</span><span class="dd">审核通过</span></div>
-      <div class="detail-row"><span class="dt">扣除税点</span><span class="dd">6%</span></div>
-      <div class="detail-row"><span class="dt">实发分润</span><span class="dd">1.56</span></div>
+      <div class="detail-row"><span class="dt">申请日期</span><span class="dd" id="vd-apply-date">2024-02-06 10:02:11</span></div>
+      <div class="detail-row"><span class="dt">申请分润</span><span class="dd" id="vd-apply-amt">1.66</span></div>
+      <div class="detail-row"><span class="dt">申请备注</span><span class="dd" id="vd-apply-remark">--</span></div>
+      <div class="detail-row"><span class="dt">审核备注</span><span class="dd" id="vd-audit-remark">审核通过</span></div>
+      <div class="detail-row"><span class="dt">扣除税点</span><span class="dd" id="vd-tax">6%</span></div>
+      <div class="detail-row"><span class="dt">实发分润</span><span class="dd" id="vd-real">1.56</span></div>
     </div>
     <div class="modal-foot"><button class="btn" data-close>关闭</button></div>
   </div>
 </div>
 
-<!-- ===== 审核弹窗（单条） ===== -->
+<!-- ===== 审核弹窗（勾选一条即为单条审核，勾选多条即为批量审核） ===== -->
 <div class="mask" id="modal-audit">
-  <div class="modal">
-    <div class="modal-head"><span>审核</span><button class="modal-close" data-close>×</button></div>
-    <div class="modal-body">
-      <div class="modal-stats"><span>下级申请分润合计：<b>1.80</b></span></div>
-      <div class="table-scroll">
-        <table class="grid">
-          <thead>
-            <tr><th>分润月份</th><th class="num">应分下级分润</th><th class="num">申请分润</th><th>申请备注</th><th class="num">扣除税点</th><th class="num">实发金额</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>2024-02</td><td class="num">1.80</td><td class="num">1.80</td><td>请尽快审核</td>
-              <td class="num"><input class="input sm tax-input" type="text" value="6" readonly /> %</td>
-              <td class="num real-amt">1.692</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="form-row" style="margin-top:14px">
-        <label class="lb" style="width:80px">审核备注</label>
-        <input class="input" style="flex:1" type="text" placeholder="选填" />
-      </div>
-      <div class="tip-text">税点由服务端按机构签约主体配置下发，审核页<strong>只读不可改</strong>。</div>
-    </div>
-    <div class="modal-foot">
-      <span class="foot-left">已选实发金额合计：<b>¥1.692</b></span>
-      <button class="btn btn-primary" data-toast="已驳回，状态更新为待修改">驳回</button>
-      <button class="btn btn-primary" data-toast="审核通过，实发分润已生成">通过</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== 批量审核弹窗 ===== -->
-<div class="mask" id="modal-batch-audit">
   <div class="modal wide">
-    <div class="modal-head"><span>批量审核</span><button class="modal-close" data-close>×</button></div>
+    <div class="modal-head"><span>审核</span><button class="modal-close" data-close>×</button></div>
     <div class="modal-body">
       <div class="modal-stats"><span>下级申请分润合计：<b id="audit-sel-profit">0.00</b></span></div>
       <div class="table-scroll">
@@ -1212,7 +1208,14 @@
               <th>申请备注</th><th class="num">扣除税点</th><th class="num">实发金额</th>
             </tr>
           </thead>
-          <tbody id="audit-tbody"></tbody>
+          <tbody id="audit-tbody">
+            <tr>
+              <td><input type="checkbox" class="audit-check" data-idx="0" data-profit="1.80" data-real="1.692" /></td>
+              <td>2024-02</td><td>D1</td><td class="num">1.80</td><td class="num">1.80</td><td>请尽快审核</td>
+              <td class="num"><input class="input sm tax-input" type="text" value="6" data-idx="0" /> %</td>
+              <td class="num real-amt">1.692</td>
+            </tr>
+          </tbody>
         </table>
       </div>
       <div style="margin-top:10px;font-size:13px;color:#4e5969">总计：<b id="audit-count">0</b> 条</div>
@@ -1220,11 +1223,12 @@
         <label class="lb" style="width:80px">审核备注</label>
         <input class="input" style="flex:1" type="text" placeholder="选填" />
       </div>
+      <div class="tip-text">税点默认带出机构签约主体配置值，审核页<strong>可修改</strong>（仅支持财务认可的 6% / 3%）；实发金额 = 申请分润 × (1 − 税点/100) 实时联动；勾选一条即为单条审核，勾选多条即为批量审核。</div>
     </div>
     <div class="modal-foot">
       <span class="foot-left">已选实发金额合计：<b id="audit-sel-amt">¥0.000</b></span>
-      <button class="btn btn-primary" data-toast="已驳回，状态更新为待修改">驳回</button>
-      <button class="btn btn-primary" data-toast="批量审核通过，实发分润已生成">通过</button>
+      <button class="btn btn-primary" id="btn-audit-reject" disabled data-toast="已驳回，状态更新为待修改">驳回</button>
+      <button class="btn btn-primary" id="btn-audit-pass" disabled data-toast="审核通过，实发分润已生成">通过</button>
     </div>
   </div>
 </div>

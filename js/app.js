@@ -214,11 +214,57 @@
     });
   }
 
-  /* ---------- 批量审核：页面勾选 → 弹窗按勾选数据展示 ---------- */
+  /* ---------- 审核：列表右上方【审核】→ 弹窗内勾选（勾一条=单条，勾多条=批量） ---------- */
   var AUDIT_TBODY = $('#audit-tbody');
   var AUDIT_SEL_PROFIT = $('#audit-sel-profit');
   var AUDIT_SEL_AMT = $('#audit-sel-amt');
   var AUDIT_COUNT = $('#audit-count');
+  var AUDIT_BTN_PASS = $('#btn-audit-pass');
+  var AUDIT_BTN_REJECT = $('#btn-audit-reject');
+
+  /* 未勾选任何数据时【通过】【驳回】置灰 */
+  /* ---------- 税点白名单：财务只认可 6% / 3% 的发票税点 ---------- */
+  var TAX_WHITE_LIST = [3, 6];
+
+  function isTaxValid(v) {
+    var s = String(v).trim();
+    if (s === '') { return false; }
+    var n = parseFloat(s);
+    return !isNaN(n) && TAX_WHITE_LIST.indexOf(n) > -1;
+  }
+
+  function taxInputOf(idx) {
+    return AUDIT_TBODY ? AUDIT_TBODY.querySelector('.tax-input[data-idx="' + idx + '"]') : null;
+  }
+
+  /* 税点改动：重算该行实发金额（申请分润 × (1 − 税点/100)）并同步合计与按钮态 */
+  function applyTax(input) {
+    var idx = input.getAttribute('data-idx');
+    var valid = isTaxValid(input.value);
+    input.style.borderColor = valid ? '' : '#f53f3f';
+    input.title = valid ? '' : '税点仅支持财务认可的 6% / 3%';
+    var cb = AUDIT_TBODY ? AUDIT_TBODY.querySelector('.audit-check[data-idx="' + idx + '"]') : null;
+    if (cb && valid) {
+      var real = num(cb.getAttribute('data-profit')) * (1 - num(input.value) / 100);
+      cb.setAttribute('data-real', real.toFixed(3));
+      var tr = input.closest('tr');
+      var cell = tr ? tr.querySelector('.real-amt') : null;
+      if (cell) { cell.textContent = real.toFixed(3); }
+    }
+    recalcAudit();
+  }
+
+  function gateAuditButtons(count) {
+    /* 【通过】还要求已勾选行的税点合法；【驳回】不产生实发，不受税点影响 */
+    var badTax = false;
+    $$('.audit-check').forEach(function (cb) {
+      if (badTax || !cb.checked) { return; }
+      var inp = taxInputOf(cb.getAttribute('data-idx'));
+      if (!inp || !isTaxValid(inp.value)) { badTax = true; }
+    });
+    if (AUDIT_BTN_PASS) { AUDIT_BTN_PASS.disabled = count === 0 || badTax; }
+    if (AUDIT_BTN_REJECT) { AUDIT_BTN_REJECT.disabled = count === 0; }
+  }
 
   function recalcAudit() {
     var count = 0;
@@ -233,56 +279,54 @@
     if (AUDIT_COUNT) { AUDIT_COUNT.textContent = count; }
     if (AUDIT_SEL_PROFIT) { AUDIT_SEL_PROFIT.textContent = profit.toFixed(2); }
     if (AUDIT_SEL_AMT) { AUDIT_SEL_AMT.textContent = '¥' + amt.toFixed(3); }
+    gateAuditButtons(count);
   }
 
-  function renderAuditRows(rows) {
-    if (!AUDIT_TBODY) { return; }
-    AUDIT_TBODY.innerHTML = rows.map(function (cb) {
-      var month = cb.getAttribute('data-month');
-      var org = cb.getAttribute('data-org');
-      var due = cb.getAttribute('data-due');
-      var apply = cb.getAttribute('data-apply');
-      var tax = cb.getAttribute('data-tax');
-      var real = cb.getAttribute('data-real');
-      return '<tr>' +
-        '<td><input type="checkbox" class="audit-check" checked data-profit="' + apply + '" data-real="' + real + '" /></td>' +
-        '<td>' + month + '</td><td>' + org + '</td>' +
-        '<td class="num">' + due + '</td><td class="num">' + apply + '</td><td>--</td>' +
-        '<td class="num"><input class="input sm tax-input" type="text" value="' + tax + '" readonly /> %</td>' +
-        '<td class="num real-amt">' + real + '</td>' +
-        '</tr>';
-    }).join('');
+  function bindAuditChecks() {
     $$('.audit-check').forEach(function (cb) { cb.addEventListener('change', recalcAudit); });
+    $$('.tax-input').forEach(function (inp) {
+      inp.addEventListener('input', function () { applyTax(inp); });
+    });
     recalcAudit();
   }
 
-  /* 查看下级月分润：勾选框同步「全选」状态 */
-  var lmCheckAll = $('#lm-check-all');
-  function syncLmCheckAll() {
-    if (!lmCheckAll) { return; }
-    var all = $$('.lm-check');
-    var checked = all.filter(function (x) { return x.checked; }).length;
-    lmCheckAll.checked = all.length > 0 && checked === all.length;
-    lmCheckAll.indeterminate = checked > 0 && checked < all.length;
+  /* 按页面行数据渲染审核弹窗：默认全部不勾选，勾选动作由用户在弹窗内完成
+     弹窗只装载待审核数据，审核通过/驳回后该数据即退出待审核集合，不再出现在弹窗里 */
+  var auditSourceRows = [];
+  function renderAuditRows(rows) {
+    auditSourceRows = rows || [];
+    if (!AUDIT_TBODY) { return; }
+    AUDIT_TBODY.innerHTML = rows.map(function (tr, idx) {
+      var month = tr.getAttribute('data-month');
+      var org = tr.getAttribute('data-org');
+      var due = tr.getAttribute('data-due');
+      var apply = tr.getAttribute('data-apply');
+      var tax = tr.getAttribute('data-tax');
+      var real = tr.getAttribute('data-real');
+      return '<tr>' +
+        '<td><input type="checkbox" class="audit-check" data-idx="' + idx + '" data-profit="' + apply + '" data-real="' + real + '" /></td>' +
+        '<td>' + month + '</td><td>' + org + '</td>' +
+        '<td class="num">' + due + '</td><td class="num">' + apply + '</td><td>--</td>' +
+        '<td class="num"><input class="input sm tax-input" type="text" value="' + tax + '" data-idx="' + idx + '" /> %</td>' +
+        '<td class="num real-amt">' + real + '</td>' +
+        '</tr>';
+    }).join('');
+    if (auditAll) { auditAll.checked = false; auditAll.indeterminate = false; }
+    bindAuditChecks();
   }
-  if (lmCheckAll) {
-    lmCheckAll.addEventListener('change', function () {
-      $$('.lm-check').forEach(function (cb) { cb.checked = lmCheckAll.checked; });
-    });
-  }
-  $$('.lm-check').forEach(function (cb) { cb.addEventListener('change', syncLmCheckAll); });
 
-  /* 点击「批量审核」：未勾选先提示，勾选后弹窗只展示被勾选的数据 */
-  var btnBatchAudit = $('#btn-batch-audit');
-  if (btnBatchAudit) {
-    btnBatchAudit.addEventListener('click', function () {
-      var rows = $$('.lm-check').filter(function (cb) { return cb.checked; });
-      if (!rows.length) { toast('请先勾选需要批量审核的数据'); return; }
+  /* 列表右上方【审核】入口：取本页表格里的待审核行渲染弹窗，勾选动作在弹窗内完成
+     「查看下级月分润」与「下级申请记录」两页共用同一个入口与同一个弹窗 */
+  $$('[data-audit-entry]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var scope = btn.closest('.panel') || document;
+      var rows = $$('[data-audit="pending"]', scope);
+      if (!rows.length) { toast('当前没有待审核的数据'); return; }
       renderAuditRows(rows);
-      var m = document.getElementById('modal-batch-audit');
+      var m = document.getElementById('modal-audit');
       if (m) { m.classList.add('show'); }
     });
-  }
+  });
 
   /* 弹窗内「全选」联动，并刷新合计 */
   var auditAll = $('#audit-check-all');
@@ -292,6 +336,108 @@
       recalcAudit();
     });
   }
+
+  /* 静态弹窗（由「下级申请记录」行内【审核】进入）同样按未勾选初始化 */
+  bindAuditChecks();
+
+  /* ---------- 右上角【审核】入口显隐：本页没有待审核数据时按钮不展示 ---------- */
+  function refreshAuditEntries() {
+    $$('[data-audit-entry]').forEach(function (btn) {
+      var scope = btn.closest('.panel') || document;
+      var pending = $$('[data-audit="pending"]', scope);
+      btn.style.display = pending.length ? '' : 'none';
+    });
+  }
+
+  function nowText() {
+    function p(n) { return (n < 10 ? '0' : '') + n; }
+    var d = new Date();
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' +
+      p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+  }
+
+  /* 审核结果回写：写入审核状态、审核时间与操作列，并同步申请状态与实发金额 */
+  function updateRowStatus(tr, pass) {
+    var table = tr.closest('table');
+    if (!table) { return; }
+    var heads = $$('thead th', table).map(function (th) { return th.textContent.trim(); });
+    var cells = tr.children;
+    var iStatus = heads.indexOf('审核状态');
+    var iTime = heads.indexOf('审核时间');
+    var iOper = heads.indexOf('操作');
+    var iApply = heads.indexOf('申请状态');
+    var iReal = heads.indexOf('实发金额');
+    if (iStatus > -1) {
+      cells[iStatus].innerHTML = '<span class="tag ' + (pass ? 'tag-green' : 'tag-red') + '">' +
+        (pass ? '审核通过' : '审核驳回') + '</span>';
+    }
+    if (iTime > -1) { cells[iTime].textContent = nowText(); }
+    if (iApply > -1) {
+      cells[iApply].innerHTML = '<span class="tag ' + (pass ? 'tag-green' : 'tag-red') + '">' +
+        (pass ? '已完成' : '待修改') + '</span>';
+    }
+    if (iReal > -1 && pass) { cells[iReal].textContent = tr.getAttribute('data-real') || '--'; }
+    if (iOper > -1) {
+      cells[iOper].innerHTML = '<button class="btn-link" data-modal="modal-view-done">查看</button>';
+    }
+    tr.setAttribute('data-audit', pass ? 'passed' : 'rejected');
+  }
+
+  /* 提交审核：勾选一条即为单条审核，勾选多条即为批量审核 */
+  function commitAudit(pass) {
+    var picked = $$('.audit-check').filter(function (cb) { return cb.checked; });
+    if (!picked.length) { return; }
+    picked.forEach(function (cb) {
+      var idx = parseInt(cb.getAttribute('data-idx'), 10);
+      var tr = auditSourceRows[idx];
+      if (!tr) { return; }
+      /* 弹窗内改过的税点与按该税点算出的实发金额写回源行，供列表与查看详情使用 */
+      var inp = taxInputOf(cb.getAttribute('data-idx'));
+      if (inp && isTaxValid(inp.value)) { tr.setAttribute('data-tax', inp.value.trim()); }
+      var real = cb.getAttribute('data-real');
+      if (real) { tr.setAttribute('data-real', real); }
+      updateRowStatus(tr, pass);
+    });
+    var m = document.getElementById('modal-audit');
+    if (m) { m.classList.remove('show'); }
+    auditSourceRows = [];
+    if (AUDIT_TBODY) { AUDIT_TBODY.innerHTML = ''; }
+    bindAuditChecks();
+    refreshAuditEntries();
+  }
+
+  if (AUDIT_BTN_PASS) {
+    AUDIT_BTN_PASS.addEventListener('click', function () { commitAudit(true); });
+  }
+  if (AUDIT_BTN_REJECT) {
+    AUDIT_BTN_REJECT.addEventListener('click', function () { commitAudit(false); });
+  }
+
+  refreshAuditEntries();
+
+  /* 查看详情弹窗：按所在行的申请与审核数据展示 */
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-modal="modal-view-done"]');
+    if (!btn) { return; }
+    var tr = btn.closest('tr');
+    if (!tr) { return; }
+    var table = tr.closest('table');
+    var heads = table ? $$('thead th', table).map(function (th) { return th.textContent.trim(); }) : [];
+    var cell = function (name) {
+      var i = heads.indexOf(name);
+      return i > -1 ? tr.children[i].textContent.trim() : '';
+    };
+    var put = function (id, val) {
+      var el = document.getElementById(id);
+      if (el && val !== undefined && val !== null && val !== '') { el.textContent = val; }
+    };
+    put('vd-apply-date', cell('申请时间') || cell('申请日期') || '--');
+    put('vd-apply-amt', tr.getAttribute('data-apply'));
+    put('vd-apply-remark', '--');
+    put('vd-audit-remark', cell('审核状态') || '--');
+    put('vd-tax', (tr.getAttribute('data-tax') || '--') + '%');
+    put('vd-real', tr.getAttribute('data-real') || '--');
+  });
 
   /* ---------- 配置页：权限联动 / 比例校验 ---------- */
   $$('[data-toggle-block]').forEach(function (radio) {
@@ -505,7 +651,7 @@
     title: '下级机构分润审核功能升级',
     img: 'images/guide-submonth-apply-audit.png',
     lines: [
-      '在【查看月分润页面】可查看下级机构月分润，可查看下级分润申请并进行审核/批量审核；审核过的数据点击"查看"可以查看申请、审核详情。'
+      '在【查看月分润页面】可查看下级机构月分润，可查看下级分润申请并进行审核；审核过的数据点击"查看"可以查看申请、审核详情。'
     ]
   };
   var GUIDE_APPLY = {

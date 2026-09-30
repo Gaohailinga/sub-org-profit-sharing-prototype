@@ -266,6 +266,14 @@ body {
 /* 现状布局：跳转类按钮（下级申请管理）在筛选行右侧 */
 .btn-area.push-right { margin-left: auto; }
 
+/* ---------- 列表右上方工具条（申请分润 / 审核入口） ---------- */
+.table-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin: 12px 0 8px;
+}
+
 /* ---------- 统计条（表头上方） ---------- */
 .stats {
   display: flex;
