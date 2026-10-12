@@ -446,6 +446,12 @@ table.grid .empty { text-align: center; color: #86909c; padding: 40px 0; }
 .radio-group label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
 .tip-text { font-size: 12px; color: #86909c; }
 
+/* 导出文件预览：Sheet 标签条（原型演示，非正式页面元素） */
+.sheet-tabs { display: flex; flex-wrap: wrap; border-bottom: 2px solid #165dff; }
+.sheet-tab { padding: 6px 14px; font-size: 13px; color: #4e5969; background: #f2f3f5; border: 1px solid #e5e6eb; border-bottom: none; margin-right: 4px; border-radius: 3px 3px 0 0; }
+.sheet-tab.active { background: #fff; color: #1f2329; font-weight: 600; }
+.sheet-tab.sheet-tab-new { background: #e8f3ff; color: #165dff; font-weight: 600; border-color: #165dff; }
+
 /* 上传组件 */
 .upload-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
 .file-chip {
@@ -514,5 +520,22 @@ table.grid .empty { text-align: center; color: #86909c; padding: 40px 0; }
   display: flex; justify-content: flex-end; gap: 8px;
   margin-top: 14px; padding-top: 12px; border-top: 1px solid #e5e6eb;
 }
+
+/* ===== 申请分润弹窗 · 单条模式 =====
+   从「申请记录」页行内【申请分润】进入：只展示该行数据，隐藏勾选框列、申请状态列与产品分润明细列，
+   不提供表头全选，避免误把其他月份的数据一起申请 */
+#modal-apply .apply-single-tip { display: none; }
+#modal-apply.apply-single .apply-single-tip {
+  display: block; margin-bottom: 10px; padding: 8px 10px;
+  background: #f0f5ff; border: 1px solid #adc6ff; border-radius: 4px;
+  color: #1d39c4; font-size: 13px; line-height: 20px;
+}
+#modal-apply.apply-single th:nth-child(1),
+#modal-apply.apply-single td:nth-child(1),
+#modal-apply.apply-single th:nth-child(4),
+#modal-apply.apply-single td:nth-child(4),
+#modal-apply.apply-single th:nth-child(n+5):nth-child(-n+9),
+#modal-apply.apply-single td:nth-child(n+5):nth-child(-n+9) { display: none; }
+#modal-apply.apply-single .apply-total-stat { display: none; }
 
 .hide { display: none !important; }

@@ -9,10 +9,6 @@
     'page-month-detail': '查看月分润明细',
     'page-lower-month': '查看下级月分润',
     'page-lower-month-detail': '查看下级月分润明细',
-    'page-daily': '查看日分润',
-    'page-daily-detail': '查看日分润明细',
-    'page-lower-daily': '查看下级日分润',
-    'page-lower-daily-detail': '查看下级日分润明细',
     'page-org-config': '下级机构管理',
     'page-migrate': '下级申请管理',
     'page-history': '申请记录',
@@ -64,7 +60,7 @@
   var onPageShown = null;
 
   /* ---------- 顶部导航模块切换（「分润管理」/「账号管理」） ----------
-     真实系统里顶级导航决定左侧二级菜单：分润管理模块下是月分润 / 日分润 / 发票 / 机构分润；
+     真实系统里顶级导航决定左侧二级菜单：分润管理模块下的二级菜单与账号管理模块互不相同；
      「下级机构管理」属于账号管理模块，不在分润管理的左侧菜单里。
      本原型按同一层级呈现：切页时按页面归属自动切换顶部导航高亮与左侧二级菜单。 */
   var PAGE_MODULE_ACCOUNT = { 'page-org-config': true };
@@ -173,21 +169,66 @@
     if (t.classList && t.classList.contains('drawer-mask')) { t.classList.remove('show'); }
   });
 
-  /* ---------- 申请分润弹窗：勾选与金额联动 ---------- */
+  /* ---------- 申请分润弹窗：勾选与金额联动 ----------
+     两种进入方式：
+     ① 「查看月分润」页筛选区【申请分润】→ 批量模式：可按月份勾选多条（表头可全选）
+     ② 「申请记录」页行内【申请分润】→ 单条模式：只展示该行数据，无勾选框、无表头全选，只能申请该行 */
   function num(v) { var n = parseFloat(v); return isNaN(n) ? 0 : n; }
 
+  var APPLY_MODAL = $('#modal-apply');
+  var APPLY_TBODY = $('#apply-tbody');
+  var APPLY_BATCH_HTML = APPLY_TBODY ? APPLY_TBODY.innerHTML : '';
+
+  function isApplySingle() { return !!(APPLY_MODAL && APPLY_MODAL.classList.contains('apply-single')); }
+
   function recalcApply() {
-    var selProfit = 0, selAmt = 0, count = 0;
-    $$('.apply-check').forEach(function (cb) {
-      if (!cb.checked) { return; }
-      count++;
-      var profit = num(cb.getAttribute('data-profit'));
-      selProfit += profit;
-      selAmt += profit;
-    });
+    var selProfit = 0, count = 0;
+    if (isApplySingle()) {
+      /* 单条模式：没有勾选框，合计即当前展示的那一条 */
+      $$('#apply-tbody tr').forEach(function (tr) {
+        count++;
+        selProfit += num(tr.getAttribute('data-profit'));
+      });
+    } else {
+      $$('.apply-check').forEach(function (cb) {
+        if (!cb.checked) { return; }
+        count++;
+        selProfit += num(cb.getAttribute('data-profit'));
+      });
+    }
     $('#apply-sel-profit').textContent = selProfit.toFixed(2);
     $('#apply-count').textContent = count;
     $('#btn-apply-submit').disabled = count === 0;
+  }
+
+  function bindApplyChecks() {
+    $$('.apply-check').forEach(function (cb) { cb.addEventListener('change', recalcApply); });
+  }
+
+  /* 批量模式：还原可按月份勾选的列表 */
+  function openApplyBatch() {
+    if (!APPLY_MODAL || !APPLY_TBODY) { return; }
+    APPLY_MODAL.classList.remove('apply-single');
+    APPLY_TBODY.innerHTML = APPLY_BATCH_HTML;
+    var all = $('#apply-check-all');
+    if (all) { all.checked = false; all.indeterminate = false; }
+    bindApplyChecks();
+    recalcApply();
+  }
+
+  /* 单条模式：只渲染被点击的那一行数据（序号 / 分润月份 / 分润合计） */
+  function openApplySingle(tr) {
+    if (!APPLY_MODAL || !APPLY_TBODY || !tr) { return; }
+    var month = tr.getAttribute('data-apply-month') || '--';
+    var profit = tr.getAttribute('data-apply-profit') || '0.00';
+    APPLY_MODAL.classList.add('apply-single');
+    APPLY_TBODY.innerHTML = '<tr data-profit="' + profit + '">' +
+      '<td></td><td>1</td><td>' + month + '</td><td></td>' +
+      '<td></td><td></td><td></td><td></td><td></td>' +
+      '<td class="num">' + profit + '</td></tr>';
+    var monthEl = $('#apply-single-month');
+    if (monthEl) { monthEl.textContent = month; }
+    recalcApply();
   }
 
   var applyAll = $('#apply-check-all');
@@ -197,8 +238,43 @@
       recalcApply();
     });
   }
-  $$('.apply-check').forEach(function (cb) { cb.addEventListener('change', recalcApply); });
+  bindApplyChecks();
   /* 2026-09-21：已取消自定义申请金额，申请金额强制等于分润合计 */
+
+  /* 「查看月分润」页筛选区入口 → 按数据里现成的「申请方式」分流（业务方 2026-09-30 指示）；
+     「申请记录」页行内入口 → 单条模式 */
+  var APPLY_MODE = 'month';  /* 演示取值：month=按月申请 → 本页「申请分润」弹窗；amount=按金额申请 → 原申请分润页面 */
+  function handleApplyEntry() {
+    if (APPLY_MODE === 'amount') {
+      toast('申请方式为「按金额申请」，跳转原申请分润页面');
+      openPage('page-history-apply-original');
+      return;
+    }
+    openApplyBatch();
+    if (APPLY_MODAL) { APPLY_MODAL.classList.add('show'); }
+  }
+
+  /* 「申请记录」页驳回行【重新申请】→ 按该条记录现成的「申请方式」分流（业务方 2026-10-08 指示）：
+     ① 申请方式 = 按金额申请 → 跳转「原申请分润页面」（上线前按金额填写的旧页面，本原型以占位页标示）
+     ② 申请方式 = 按月申请   → 打开本列表页内的「申请分润」弹窗（单条模式，只申请该行对应月份） */
+  function handleReapply(btn) {
+    var tr = btn.closest('tr');
+    var way = tr ? (tr.getAttribute('data-apply-way') || '') : '';
+    if (way === 'amount') {
+      toast('该条申请方式为「按金额申请」，跳转原申请分润页面');
+      openPage('page-history-apply-original');
+      return;
+    }
+    if (APPLY_MODAL) { APPLY_MODAL.classList.add('show'); }
+    openApplySingle(tr);
+  }
+
+  document.addEventListener('click', function (e) {
+    var reapplyBtn = e.target.closest('[data-reapply]');
+    if (reapplyBtn) { handleReapply(reapplyBtn); return; }
+    var batchBtn = e.target.closest('[data-apply-entry]');
+    if (batchBtn) { handleApplyEntry(); }
+  });
 
   var btnSubmit = $('#btn-apply-submit');
   if (btnSubmit) {
@@ -209,7 +285,7 @@
     });
   }
 
-  /* ---------- 审核：列表右上方【审核】→ 弹窗内勾选（勾一条=单条，勾多条=批量） ---------- */
+  /* ---------- 审核：筛选区【审核】→ 弹窗内勾选（勾选一条即审核该条，勾选多条即一次审核多条） ---------- */
   var AUDIT_TBODY = $('#audit-tbody');
   var AUDIT_SEL_PROFIT = $('#audit-sel-profit');
   var AUDIT_SEL_AMT = $('#audit-sel-amt');
@@ -310,7 +386,7 @@
     bindAuditChecks();
   }
 
-  /* 列表右上方【审核】入口：取本页表格里的待审核行渲染弹窗，勾选动作在弹窗内完成
+  /* 筛选区【审核】入口：取本页表格里的待审核行渲染弹窗，勾选动作在弹窗内完成
      「查看下级月分润」与「下级申请记录」两页共用同一个入口与同一个弹窗 */
   $$('[data-audit-entry]').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -335,7 +411,7 @@
   /* 静态弹窗（由「下级申请记录」行内【审核】进入）同样按未勾选初始化 */
   bindAuditChecks();
 
-  /* ---------- 右上角【审核】入口显隐：本页没有待审核数据时按钮不展示 ---------- */
+  /* ---------- 筛选区【审核】入口显隐：本页没有待审核数据时按钮不展示 ---------- */
   function refreshAuditEntries() {
     $$('[data-audit-entry]').forEach(function (btn) {
       var scope = btn.closest('.panel') || document;
@@ -378,7 +454,7 @@
     tr.setAttribute('data-audit', pass ? 'passed' : 'rejected');
   }
 
-  /* 提交审核：勾选一条即为单条审核，勾选多条即为批量审核 */
+  /* 提交审核：勾选一条即审核该条，勾选多条即一次审核多条 */
   function commitAudit(pass) {
     var picked = $$('.audit-check').filter(function (cb) { return cb.checked; });
     if (!picked.length) { return; }
@@ -409,6 +485,123 @@
   }
 
   refreshAuditEntries();
+
+  /* ---------- 下级分润发布：仅「下级分润发布设置」＝手动发布时展示入口，按月份发布 ---------- */
+  var LM_TBODY = $('#lm-tbody');
+  var RELEASE_ENTRIES = $$('[data-release-entry]');
+  var RELEASE_TBODY = $('#release-tbody');
+  var RELEASE_MONTH_TOTAL = $('#release-month-total');
+  var RELEASE_AMT_TOTAL = $('#release-amt-total');
+  var RELEASE_COUNT = $('#release-count');
+  var RELEASE_SEL = $('#release-sel');
+  var RELEASE_SEL_AMT = $('#release-sel-amt');
+  var RELEASE_SUBMIT = $('#btn-release-submit');
+  var RELEASE_CHECK_ALL = $('#release-check-all');
+
+  /* 取「待发布」的行并按分润月份归并：同一月份下多个下级机构合并为一行 */
+  function releaseGroups() {
+    var map = {};
+    if (!LM_TBODY) { return []; }
+    $$('#lm-tbody tr').forEach(function (tr) {
+      if ((tr.getAttribute('data-publish') || '').indexOf('待发布') < 0) { return; }
+      var month = tr.getAttribute('data-month') || '';
+      if (!month) { return; }
+      if (!map[month]) { map[month] = { month: month, orgs: [], amt: 0 }; }
+      var org = tr.getAttribute('data-org') || '';
+      if (org && map[month].orgs.indexOf(org) < 0) { map[month].orgs.push(org); }
+      map[month].amt += parseFloat(tr.getAttribute('data-due') || '0') || 0;
+    });
+    return Object.keys(map).sort().map(function (k) { return map[k]; });
+  }
+
+  function releaseChecked() {
+    if (!RELEASE_TBODY) { return []; }
+    return Array.prototype.filter.call(RELEASE_TBODY.querySelectorAll('.release-check'), function (cb) { return cb.checked; });
+  }
+
+  /* 勾选状态联动：已选月份数、已选发布金额、【发布】按钮置灰 */
+  function renderReleaseSel() {
+    var picked = releaseChecked();
+    var amt = 0;
+    picked.forEach(function (cb) { amt += parseFloat(cb.getAttribute('data-amt') || '0') || 0; });
+    if (RELEASE_COUNT) { RELEASE_COUNT.textContent = releaseGroups().length; }
+    if (RELEASE_SEL) { RELEASE_SEL.textContent = picked.length; }
+    if (RELEASE_SEL_AMT) { RELEASE_SEL_AMT.textContent = amt.toFixed(2); }
+    if (RELEASE_SUBMIT) { RELEASE_SUBMIT.disabled = picked.length === 0; }
+    if (RELEASE_CHECK_ALL) {
+      var all = RELEASE_TBODY ? RELEASE_TBODY.querySelectorAll('.release-check') : [];
+      RELEASE_CHECK_ALL.checked = all.length > 0 && picked.length === all.length;
+    }
+  }
+
+  function renderReleaseRows() {
+    if (!RELEASE_TBODY) { return; }
+    var groups = releaseGroups();
+    var amtTotal = 0;
+    groups.forEach(function (g) { amtTotal += g.amt; });
+    RELEASE_TBODY.innerHTML = groups.map(function (g, idx) {
+      return '<tr>' +
+        '<td><input type="checkbox" class="release-check" data-idx="' + idx + '" data-month="' + g.month +
+        '" data-amt="' + g.amt.toFixed(2) + '" /></td>' +
+        '<td>' + g.month + '</td>' +
+        '<td>' + g.orgs.join('、') + '</td>' +
+        '<td class="num">' + g.amt.toFixed(2) + '</td>' +
+        '<td><span class="tag tag-gray">待发布</span></td>' +
+        '</tr>';
+    }).join('');
+    if (RELEASE_MONTH_TOTAL) { RELEASE_MONTH_TOTAL.textContent = groups.length; }
+    if (RELEASE_AMT_TOTAL) { RELEASE_AMT_TOTAL.textContent = amtTotal.toFixed(2); }
+    if (RELEASE_CHECK_ALL) { RELEASE_CHECK_ALL.checked = false; }
+    RELEASE_TBODY.querySelectorAll('.release-check').forEach(function (cb) {
+      cb.addEventListener('change', renderReleaseSel);
+    });
+    renderReleaseSel();
+  }
+
+  /* 入口显隐：「下级分润发布设置」＝手动发布时才展示【数据发布】 */
+  function setPushMode(manual) {
+    RELEASE_ENTRIES.forEach(function (el) { el.classList.toggle('hide', !manual); });
+    $$('[data-toggle-push-mode]').forEach(function (r) { r.checked = (r.value === 'manual') === manual; });
+  }
+
+  RELEASE_ENTRIES.forEach(function (el) {
+    el.addEventListener('click', function () { renderReleaseRows(); });
+  });
+  if (RELEASE_CHECK_ALL) {
+    RELEASE_CHECK_ALL.addEventListener('change', function () {
+      var on = this.checked;
+      if (RELEASE_TBODY) {
+        RELEASE_TBODY.querySelectorAll('.release-check').forEach(function (cb) { cb.checked = on; });
+      }
+      renderReleaseSel();
+    });
+  }
+  if (RELEASE_SUBMIT) {
+    RELEASE_SUBMIT.addEventListener('click', function () {
+      var months = releaseChecked().map(function (cb) { return cb.getAttribute('data-month'); });
+      if (!months.length) { return; }
+      if (LM_TBODY) {
+        $$('#lm-tbody tr').forEach(function (tr) {
+          if (months.indexOf(tr.getAttribute('data-month')) < 0) { return; }
+          if ((tr.getAttribute('data-publish') || '').indexOf('待发布') < 0) { return; }
+          tr.setAttribute('data-publish', '已手动发布');
+          var tag = tr.querySelector('td:nth-child(15) .tag');
+          if (tag) { tag.className = 'tag tag-green'; tag.textContent = '已手动发布'; }
+        });
+      }
+      var m = document.getElementById('modal-release');
+      if (m) { m.classList.remove('show'); }
+      toast('已数据发布：' + months.join('、') + '，该月份下全部下级机构的分润数据已可见');
+      renderReleaseRows();
+    });
+  }
+  $$('[data-toggle-push-mode]').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      if (!this.checked) { return; }
+      setPushMode(this.value === 'manual');
+    });
+  });
+  setPushMode(false);
 
   /* 查看详情弹窗：按所在行的申请与审核数据展示 */
   document.addEventListener('click', function (e) {
@@ -462,16 +655,37 @@
   var MONTH_EXTRA_BEFORE_COLS = $$('.month-extra-col-before');
   var MONTH_EXTRA_AMOUNT_COLS = $$('.month-extra-col-amount');
   var MONTH_EXTRA_BUTTONS = $$('.btn-toggle-detail');
+  /* 导出文件预览（原型演示）：导出时是否多带一个「支付及相关增值业务额外收取分润」Sheet，
+     与上面同一个配置项联动 —— 允许则带、不允许则不带 */
+  var EXPORT_SHEET_TAB = $('#export-sheet-extra');
+  var EXPORT_SHEET_CARD = $('#export-sheet-card');
+  var EXPORT_TIP_ALLOW = $('#export-tip-allow');
+  var EXPORT_TIP_DENY = $('#export-tip-deny');
+  var EXPORT_DEMO_RADIOS = $$('[data-export-demo-extra]');
   function setMonthExtraView(allow) {
     MONTH_EXTRA_BEFORE_COLS.forEach(function (el) { el.classList.toggle('hide', !allow); });
     MONTH_EXTRA_AMOUNT_COLS.forEach(function (el) { el.classList.toggle('hide', !allow); });
     MONTH_EXTRA_BUTTONS.forEach(function (el) { el.classList.toggle('hide', !allow); });
+    if (EXPORT_SHEET_TAB) { EXPORT_SHEET_TAB.classList.toggle('hide', !allow); }
+    if (EXPORT_SHEET_CARD) { EXPORT_SHEET_CARD.classList.toggle('hide', !allow); }
+    if (EXPORT_TIP_ALLOW) { EXPORT_TIP_ALLOW.classList.toggle('hide', !allow); }
+    if (EXPORT_TIP_DENY) { EXPORT_TIP_DENY.classList.toggle('hide', allow); }
     if (MONTH_EXTRA_STATUS) {
       MONTH_EXTRA_STATUS.textContent = allow ? '允许' : '不允许（默认）';
       MONTH_EXTRA_STATUS.className = allow ? 'tag tag-green' : 'tag tag-orange';
     }
+    /* 配置页单选框与导出预览弹窗内的演示单选框始终同步为同一状态 */
+    $$('[data-toggle-month-extra]').forEach(function (r) { r.checked = (r.value === 'yes') === allow; });
+    EXPORT_DEMO_RADIOS.forEach(function (r) { r.checked = (r.value === 'yes') === allow; });
   }
   $$('[data-toggle-month-extra]').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      if (!this.checked) { return; }
+      setMonthExtraView(this.value === 'yes');
+    });
+  });
+  /* 导出预览弹窗内可直接切换权限状态（原型演示用，与配置页同一开关，仅影响展示） */
+  EXPORT_DEMO_RADIOS.forEach(function (radio) {
     radio.addEventListener('change', function () {
       if (!this.checked) { return; }
       setMonthExtraView(this.value === 'yes');
@@ -524,6 +738,16 @@
       setApplyPermission(applyOn);
       /* 申请开关同时控制历史分润提示文案与入口：关闭时一并隐藏 */
       renderHistoryApplyEntry();
+    });
+  });
+
+  /* 「申请方式」演示开关（非产品配置项）：只切换「查看月分润」筛选区【申请分润】的去向。
+     申请方式本身不是配置项，也不是可切换开关，它是点击入口时对「数据里现成取值」的判断。 */
+  $$('[data-toggle-apply-mode]').forEach(function (radio) {
+    radio.checked = (radio.value === APPLY_MODE);
+    radio.addEventListener('change', function () {
+      if (!this.checked) { return; }
+      APPLY_MODE = this.value;
     });
   });
 
